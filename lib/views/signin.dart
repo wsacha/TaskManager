@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:task_manager/widgets/widget.dart';
 
 class SignIn extends StatefulWidget {
-  SignIn({Key key}) : super(key: key);
+  final Function toggle;
+  SignIn(this.toggle);
 
   @override
   _SignInState createState() => _SignInState();
@@ -36,8 +37,7 @@ class _SignInState extends State<SignIn> {
                   Container(
                     alignment: Alignment.centerRight,
                     child: Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                       child: Text(
                         'Forgot Password?',
                         style: simpleTextStyle(),
@@ -52,10 +52,8 @@ class _SignInState extends State<SignIn> {
                     width: MediaQuery.of(context).size.width,
                     padding: EdgeInsets.symmetric(vertical: 20),
                     decoration: BoxDecoration(
-                        gradient: LinearGradient(colors: [
-                          const Color(0xff007EF4),
-                          const Color(0xff2A75BC)
-                        ]),
+                        gradient: LinearGradient(
+                            colors: [const Color(0xff007EF4), const Color(0xff2A75BC)]),
                         borderRadius: BorderRadius.circular(30)),
                     child: Text(
                       'Sign in',
@@ -69,9 +67,8 @@ class _SignInState extends State<SignIn> {
                     alignment: Alignment.center,
                     width: MediaQuery.of(context).size.width,
                     padding: EdgeInsets.symmetric(vertical: 20),
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(30)),
+                    decoration:
+                        BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(30)),
                     child: Text(
                       'Sign in with Google',
                       style: TextStyle(color: Colors.black87, fontSize: 17),
@@ -87,12 +84,20 @@ class _SignInState extends State<SignIn> {
                         "Don't have account? ",
                         style: mediumTextStyle(),
                       ),
-                      Text(
-                        'Register now',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 17,
-                            decoration: TextDecoration.underline),
+                      GestureDetector(
+                        onTap: () {
+                          widget.toggle();
+                        },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(vertical: 8),
+                          child: Text(
+                            'Register now',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 17,
+                                decoration: TextDecoration.underline),
+                          ),
+                        ),
                       )
                     ],
                   ),

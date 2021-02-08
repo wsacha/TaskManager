@@ -4,7 +4,8 @@ import 'package:task_manager/views/home.dart';
 import 'package:task_manager/widgets/widget.dart';
 
 class SignUp extends StatefulWidget {
-  SignUp({Key key}) : super(key: key);
+  final Function toggle;
+  SignUp(this.toggle);
 
   @override
   _SignUpState createState() => _SignUpState();
@@ -30,7 +31,7 @@ class _SignUpState extends State<SignUp> {
           .then((val) {
         print("${val.uid}");
 
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeUser()));
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeRoom()));
       });
     }
   }
@@ -136,12 +137,20 @@ class _SignUpState extends State<SignUp> {
                             "Already have account? ",
                             style: mediumTextStyle(),
                           ),
-                          Text(
-                            'Sign in now',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 17,
-                                decoration: TextDecoration.underline),
+                          GestureDetector(
+                            onTap: () {
+                              widget.toggle();
+                            },
+                            child: Container(
+                              padding: EdgeInsets.symmetric(vertical: 8),
+                              child: Text(
+                                'Sign in now',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 17,
+                                    decoration: TextDecoration.underline),
+                              ),
+                            ),
                           )
                         ],
                       ),
