@@ -38,4 +38,18 @@ class UserPreferenceFunctions {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return await prefs.getString(sharedPreferenceUserEmailKey);
   }
+
+  static removeSavedValues() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool(sharedPreferenceUserLoggedInKey, false);
+    prefs.remove(sharedPreferenceUserNameKey);
+    prefs.remove(sharedPreferenceUserEmailKey);
+  }
+
+  static displaySavedValues() async {
+    bool state = await getUserLoggedInSharedPreference();
+    String name = await getUserNameSharedPreference();
+    String email = await getUserEmailSharedPreference();
+    print("state: $state , name: $name , email: $email");
+  }
 }

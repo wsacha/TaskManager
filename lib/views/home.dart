@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:task_manager/services/auth.dart';
 import 'package:task_manager/utils/authenticate.dart';
+import 'package:task_manager/utils/helperfunctions.dart';
 
 class HomeRoom extends StatefulWidget {
   HomeRoom({Key key}) : super(key: key);
@@ -19,8 +20,9 @@ class _HomeRoomState extends State<HomeRoom> {
         title: Text('Rooms'),
         actions: [
           GestureDetector(
-              onTap: () {
+              onTap: () async {
                 authMethods.signOut();
+                await UserPreferenceFunctions.removeSavedValues();
                 Navigator.pushReplacement(
                     context, MaterialPageRoute(builder: (context) => Authenticate()));
               },
@@ -34,4 +36,6 @@ class _HomeRoomState extends State<HomeRoom> {
       ),
     );
   }
+
+  newMethod() => UserPreferenceFunctions.removeSavedValues();
 }
