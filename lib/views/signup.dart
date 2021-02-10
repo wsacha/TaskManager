@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:task_manager/services/auth.dart';
+import 'package:task_manager/services/database.dart';
+import 'package:task_manager/utils/helperfunctions.dart';
 import 'package:task_manager/views/home.dart';
 import 'package:task_manager/widgets/widget.dart';
 
@@ -14,6 +16,7 @@ class SignUp extends StatefulWidget {
 class _SignUpState extends State<SignUp> {
   bool isLoading = false;
   AuthMethods authMethods = new AuthMethods();
+  DatabaseMethods databaseMethods = new DatabaseMethods();
 
   final formKey = GlobalKey<FormState>();
   TextEditingController userNameTextEditingController = new TextEditingController();
@@ -22,6 +25,14 @@ class _SignUpState extends State<SignUp> {
 
   signUserUp() {
     if (formKey.currentState.validate()) {
+      Map<String, String> userInfoMap = {
+        "name": userNameTextEditingController.text,
+        "email": emailTextEditingController.text
+      };
+
+      UserPreferenceFunctions.saveUserEmailSharedPreference(emailTextEditingController.text);
+      UserPreferenceFunctions.saveUserNameSharedPreference(userNameTextEditingController.text);
+
       setState(() {
         isLoading = true;
       });
@@ -31,6 +42,8 @@ class _SignUpState extends State<SignUp> {
           .then((val) {
         print("${val.uid}");
 
+        databaseMethods.uploadUserInfo(userInfoMap);
+        UserPreferenceFunctions.saveUserLoggedInSharedPreference(true);
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeRoom()));
       });
     }
