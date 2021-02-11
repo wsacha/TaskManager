@@ -22,7 +22,7 @@ TextStyle mediumTextStyle() {
   return TextStyle(color: Colors.white, fontSize: 17);
 }
 
-ShowAlertDialog(BuildContext context, String text) {
+showAlertDialog(BuildContext context, String text) {
   Widget cancelButton = FlatButton(
     child: Text('Cancel'),
     onPressed: () {},

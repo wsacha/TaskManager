@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:task_manager/services/auth.dart';
 import 'package:task_manager/utils/authenticate.dart';
-import 'package:task_manager/utils/helperfunctions.dart';
+import 'package:task_manager/utils/sharedpreferences.dart';
 
 class HomeRoom extends StatefulWidget {
   HomeRoom({Key key}) : super(key: key);
@@ -21,6 +21,7 @@ class _HomeRoomState extends State<HomeRoom> {
         actions: [
           GestureDetector(
               onTap: () async {
+                await UserPreferenceFunctions.displaySavedValues();
                 authMethods.signOut();
                 await UserPreferenceFunctions.removeSavedValues();
                 Navigator.pushReplacement(

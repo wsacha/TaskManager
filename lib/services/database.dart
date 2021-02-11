@@ -8,6 +8,13 @@ class DatabaseMethods {
         .get();
   }
 
+  getUserByUserName(String userName) async {
+    return await FirebaseFirestore.instance
+        .collection("users")
+        .where("name", isEqualTo: userName)
+        .get();
+  }
+
   uploadUserInfo(userMap) {
     FirebaseFirestore.instance.collection("users").add(userMap).catchError((e) {
       print(e.toString());
