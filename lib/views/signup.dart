@@ -83,13 +83,15 @@ class _SignUpState extends State<SignUp> {
                 ? Center(child: Container(child: CircularProgressIndicator()))
                 : SingleChildScrollView(
                     child: Container(
-                      height: MediaQuery.of(context).size.height - 50,
                       alignment: Alignment.bottomCenter,
                       child: Container(
                         padding: EdgeInsets.symmetric(horizontal: 24),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
+                            SizedBox(
+                              height: 24,
+                            ),
                             Form(
                               key: formKey,
                               child: Column(
@@ -159,21 +161,7 @@ class _SignUpState extends State<SignUp> {
                               ),
                             ),
                             SizedBox(
-                              height: 16,
-                            ),
-                            Container(
-                              alignment: Alignment.center,
-                              width: MediaQuery.of(context).size.width,
-                              padding: EdgeInsets.symmetric(vertical: 20),
-                              decoration: BoxDecoration(
-                                  color: Colors.white, borderRadius: BorderRadius.circular(30)),
-                              child: Text(
-                                'Sign up with Google',
-                                style: TextStyle(color: Colors.black87, fontSize: 17),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 16,
+                              height: 32,
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
