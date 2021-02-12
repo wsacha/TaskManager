@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:task_manager/providers/user_model.dart';
 import 'package:task_manager/services/auth.dart';
 import 'package:task_manager/services/database.dart';
 import 'package:task_manager/utils/sharedpreferences.dart';
@@ -22,7 +24,7 @@ class _SignUpState extends State<SignUp> {
 
   final formKey = GlobalKey<FormState>();
   TextEditingController userNameTextEditingController = new TextEditingController();
-  TextEditingController emailTextEditingController = new TextEditingController();
+  TextEditingController userEmailTextEditingController = new TextEditingController();
   TextEditingController passwordTextEditingController = new TextEditingController();
 
   signUserUp() async {
@@ -34,12 +36,12 @@ class _SignUpState extends State<SignUp> {
       if (message == false) {
         await authMethods
             .signUpWithEmailAndPassword(
-                emailTextEditingController.text, passwordTextEditingController.text)
+                userEmailTextEditingController.text, passwordTextEditingController.text)
             .then((result) {
           if (result != null) {
             Map<String, String> userInfoMap = {
               "name": userNameTextEditingController.text,
-              "email": emailTextEditingController.text
+              "email": userEmailTextEditingController.text
             };
 
             databaseMethods.uploadUserInfo(userInfoMap);
@@ -47,7 +49,13 @@ class _SignUpState extends State<SignUp> {
             UserPreferenceFunctions.saveUserLoggedInSharedPreference(true);
             UserPreferenceFunctions.saveUserNameSharedPreference(
                 userNameTextEditingController.text);
-            UserPreferenceFunctions.saveUserEmailSharedPreference(emailTextEditingController.text);
+            UserPreferenceFunctions.saveUserEmailSharedPreference(
+                userEmailTextEditingController.text);
+
+            var state = Provider.of<UserDataModel>(context, listen: false);
+            state.userName = userNameTextEditingController.text;
+            state.userEmail = userEmailTextEditingController.text;
+
             Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeRoom()));
           }
         });
@@ -66,7 +74,8 @@ class _SignUpState extends State<SignUp> {
     if (checkExistingData.docs.isNotEmpty) {
       return "Username already exists";
     }
-    checkExistingData = await databaseMethods.getUserByUserEmail(emailTextEditingController.text);
+    checkExistingData =
+        await databaseMethods.getUserByUserEmail(userEmailTextEditingController.text);
     if (checkExistingData.docs.isNotEmpty) {
       return "Email already exists";
     } else
@@ -115,7 +124,7 @@ class _SignUpState extends State<SignUp> {
                                           ? null
                                           : "Please provide a valid e-mail";
                                     },
-                                    controller: emailTextEditingController,
+                                    controller: userEmailTextEditingController,
                                     style: simpleTextStyle(),
                                     decoration: textFieldInputDecoration('email'),
                                   ),

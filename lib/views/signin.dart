@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:task_manager/providers/user_model.dart';
 import 'package:task_manager/services/auth.dart';
 import 'package:task_manager/services/database.dart';
 import 'package:task_manager/utils/sharedpreferences.dart';
@@ -42,6 +44,10 @@ class _SignInState extends State<SignIn> {
               snapshotUserInfo.docs[0].data()["name"]);
           UserPreferenceFunctions.saveUserEmailSharedPreference(
               snapshotUserInfo.docs[0].data()["email"]);
+
+          var state = Provider.of<UserDataModel>(context, listen: false);
+          state.userName = snapshotUserInfo.docs[0].data()["name"].toString();
+          state.userEmail = snapshotUserInfo.docs[0].data()["email"].toString();
 
           Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeRoom()));
         } else {

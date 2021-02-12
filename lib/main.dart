@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
+import 'package:task_manager/providers/user_model.dart';
 import 'package:task_manager/utils/authenticate.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:task_manager/utils/sharedpreferences.dart';
@@ -8,8 +9,14 @@ import 'package:task_manager/views/home.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   bool isLoggedIn = await UserPreferenceFunctions.getUserLoggedInSharedPreference();
+  String userName = await UserPreferenceFunctions.getUserNameSharedPreference();
+  String userEmail = await UserPreferenceFunctions.getUserEmailSharedPreference();
   await Firebase.initializeApp();
-  runApp(MyApp(isLoggedIn));
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(
+      create: (context) => UserDataModel(userName, userEmail),
+    )
+  ], child: MyApp(isLoggedIn)));
 }
 
 class MyApp extends StatefulWidget {
