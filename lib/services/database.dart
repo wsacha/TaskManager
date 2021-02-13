@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:task_manager/models/room.dart';
 
 class DatabaseMethods {
+  //USER
   getUserByUserEmail(String userEmail) async {
     return await FirebaseFirestore.instance
         .collection("users")
@@ -20,4 +22,14 @@ class DatabaseMethods {
       print(e.toString());
     });
   }
+
+  //ROOMS
+  getListOfRooms(userName) {
+    return FirebaseFirestore.instance
+        .collection('rooms')
+        .where("participants", arrayContains: userName)
+        .snapshots();
+  }
+
+  //TASKS
 }

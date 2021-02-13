@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:task_manager/providers/user_model.dart';
 import 'package:task_manager/utils/authenticate.dart';
@@ -37,6 +38,8 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations(
+        [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
     return MaterialApp(
       title: 'My Task Manager App',
       debugShowCheckedModeBanner: false,
