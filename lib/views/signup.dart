@@ -149,10 +149,7 @@ class _SignUpState extends State<SignUp> {
                               onTap: () async {
                                 await signUserUp();
                                 if (!isLoading) {
-                                  Scaffold.of(context).showSnackBar(SnackBar(
-                                    content: Text(message),
-                                    duration: Duration(seconds: 3),
-                                  ));
+                                  Scaffold.of(context).showSnackBar(snackBarInfo(message));
                                 }
                               },
                               child: Container(

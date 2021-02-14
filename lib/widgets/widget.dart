@@ -34,3 +34,13 @@ showAlertDialog(BuildContext context, String text) {
     actions: [cancelButton],
   );
 }
+
+SnackBar snackBarInfo(String text) {
+  return SnackBar(
+    content: Text(
+      text,
+      style: TextStyle(fontSize: 18),
+    ),
+    duration: Duration(seconds: 3),
+  );
+}

@@ -116,10 +116,7 @@ class _SignInState extends State<SignIn> {
                               onTap: () async {
                                 await signUserIn();
                                 if (!isLoading) {
-                                  Scaffold.of(context).showSnackBar(SnackBar(
-                                    content: Text("Invalid data"),
-                                    duration: Duration(seconds: 3),
-                                  ));
+                                  Scaffold.of(context).showSnackBar(snackBarInfo("Invalid data"));
                                 }
                               },
                               child: Container(

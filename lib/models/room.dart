@@ -1,12 +1,9 @@
 class Room {
   String id;
-  String owner;
   String roomTitle;
-  List<String> participants;
+  String description;
+  String entryKey;
+  String owner;
 
-  Room.fromMap(Map<String, dynamic> snapshot)
-      : id = snapshot["id"],
-        owner = snapshot["owner"],
-        roomTitle = snapshot["roomTitle"],
-        participants = snapshot["participants"];
+  List<String> participants;
 }

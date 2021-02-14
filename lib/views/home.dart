@@ -58,24 +58,22 @@ class _HomeRoomState extends State<HomeRoom> {
             );
           }
 
-          return SingleChildScrollView(
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              child: ListView(
-                  padding: EdgeInsets.all(12),
-                  children: snapshot.data.docs.map((DocumentSnapshot doc) {
-                    return ListTile(
-                      tileColor: Colors.blue[400],
-                      title: Text(doc.data()["roomTitle"] ?? "title"),
-                      subtitle: Text(doc.data()["description"] ?? "no data"),
-                      trailing: Icon(
-                        Icons.arrow_forward_outlined,
-                        size: 30,
-                        color: Colors.white,
-                      ),
-                    );
-                  }).toList()),
-            ),
+          return Container(
+            width: MediaQuery.of(context).size.width,
+            child: ListView(
+                padding: EdgeInsets.all(12),
+                children: snapshot.data.docs.map((DocumentSnapshot doc) {
+                  return ListTile(
+                    tileColor: Colors.blue[400],
+                    title: Text(doc.data()["roomTitle"] ?? "title"),
+                    subtitle: Text(doc.data()["description"] ?? "no data"),
+                    trailing: Icon(
+                      Icons.arrow_forward_outlined,
+                      size: 30,
+                      color: Colors.white,
+                    ),
+                  );
+                }).toList()),
           );
         },
       ),
