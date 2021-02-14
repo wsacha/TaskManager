@@ -95,6 +95,9 @@ class _SignInState extends State<SignIn> {
                                     style: simpleTextStyle(),
                                     decoration: textFieldInputDecoration('email'),
                                   ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
                                   TextFormField(
                                     obscureText: true,
                                     validator: (val) {

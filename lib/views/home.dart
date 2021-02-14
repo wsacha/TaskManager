@@ -6,6 +6,7 @@ import 'package:task_manager/services/auth.dart';
 import 'package:task_manager/services/database.dart';
 import 'package:task_manager/utils/authenticate.dart';
 import 'package:task_manager/utils/sharedpreferences.dart';
+import 'package:task_manager/views/addroom_screen.dart';
 
 class HomeRoom extends StatefulWidget {
   HomeRoom({Key key}) : super(key: key);
@@ -82,6 +83,7 @@ class _HomeRoomState extends State<HomeRoom> {
         onPressed: () {
           var state = Provider.of<UserDataModel>(context, listen: false);
           print("name: ${state.userName}, email: ${state.userEmail}");
+          Navigator.push(context, MaterialPageRoute(builder: (context) => AddRoom()));
         },
       ),
     );

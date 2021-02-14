@@ -115,6 +115,9 @@ class _SignUpState extends State<SignUp> {
                                     style: simpleTextStyle(),
                                     decoration: textFieldInputDecoration('username'),
                                   ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
                                   TextFormField(
                                     validator: (val) {
                                       return RegExp(
@@ -127,6 +130,9 @@ class _SignUpState extends State<SignUp> {
                                     controller: userEmailTextEditingController,
                                     style: simpleTextStyle(),
                                     decoration: textFieldInputDecoration('email'),
+                                  ),
+                                  SizedBox(
+                                    height: 10,
                                   ),
                                   TextFormField(
                                     obscureText: true,
