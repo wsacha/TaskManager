@@ -31,5 +31,9 @@ class DatabaseMethods {
         .snapshots();
   }
 
+  addRoomToDb(Room room) {
+    return FirebaseFirestore.instance.collection("rooms").add(room.toJson());
+  }
+
   //TASKS
 }

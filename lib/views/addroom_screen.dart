@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:task_manager/models/room.dart';
 import 'package:task_manager/providers/user_model.dart';
+import 'package:task_manager/services/database.dart';
 import 'package:task_manager/widgets/widget.dart';
 
 class AddRoom extends StatefulWidget {
@@ -12,12 +14,25 @@ class AddRoom extends StatefulWidget {
 
 class _AddRoomState extends State<AddRoom> {
   final formKey = GlobalKey<FormState>();
+  DatabaseMethods databaseMethods = new DatabaseMethods();
 
   TextEditingController roomTitleTextEditingController = new TextEditingController();
   TextEditingController descriptionTextEditingController = new TextEditingController();
   TextEditingController entryKeyTextEditingController = new TextEditingController();
 
-  addRoom() async {}
+  addRoom(String userName) async {
+    if (formKey.currentState.validate()) {
+      Room room = new Room(
+          id: DateTime.now().millisecondsSinceEpoch.remainder(1000000).toString(),
+          roomTitle: roomTitleTextEditingController.text,
+          description: descriptionTextEditingController.text,
+          entryKey: entryKeyTextEditingController.text,
+          owner: userName,
+          participants: [userName]);
+
+      databaseMethods.addRoomToDb(room);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +104,7 @@ class _AddRoomState extends State<AddRoom> {
                       color: Color(0xff145C9E),
                       child: Text("Add Room", style: TextStyle(color: Colors.white)),
                       onPressed: () async {
-                        await addRoom();
+                        await addRoom(userData.userName);
                       },
                     )
                   ],
