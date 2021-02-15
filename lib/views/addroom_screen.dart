@@ -31,6 +31,8 @@ class _AddRoomState extends State<AddRoom> {
           participants: [userName]);
 
       databaseMethods.addRoomToDb(room);
+
+      Navigator.pop(context);
     }
   }
 

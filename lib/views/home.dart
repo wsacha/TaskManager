@@ -64,27 +64,46 @@ class _HomeRoomState extends State<HomeRoom> {
             child: ListView(
                 padding: EdgeInsets.all(12),
                 children: snapshot.data.docs.map((DocumentSnapshot doc) {
-                  return ListTile(
-                    tileColor: Colors.blue[400],
-                    title: Text(doc.data()["roomTitle"] ?? "title"),
-                    subtitle: Text(doc.data()["description"] ?? "no data"),
-                    trailing: Icon(
-                      Icons.arrow_forward_outlined,
-                      size: 30,
-                      color: Colors.white,
+                  return Card(
+                    child: ListTile(
+                      onTap: () {
+                        print(doc.data()["id"]);
+                      },
+                      tileColor: Colors.lightBlue[300],
+                      title: Text(doc.data()["roomTitle"] ?? "title"),
+                      subtitle: Text(doc.data()["description"] ?? "no data"),
+                      trailing: Icon(
+                        Icons.arrow_forward_outlined,
+                        size: 30,
+                        color: Colors.white,
+                      ),
                     ),
                   );
                 }).toList()),
           );
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () {
-          var state = Provider.of<UserDataModel>(context, listen: false);
-          print("name: ${state.userName}, email: ${state.userEmail}");
-          Navigator.push(context, MaterialPageRoute(builder: (context) => AddRoom()));
-        },
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            heroTag: "btn1",
+            child: Icon(Icons.search),
+            onPressed: () {},
+          ),
+          SizedBox(
+            height: 15,
+          ),
+          FloatingActionButton(
+            heroTag: "btn2",
+            child: Icon(Icons.add),
+            onPressed: () {
+              var state = Provider.of<UserDataModel>(context, listen: false);
+              print("name: ${state.userName}, email: ${state.userEmail}");
+              Navigator.push(context, MaterialPageRoute(builder: (context) => AddRoom()));
+            },
+          ),
+        ],
       ),
     );
   }
