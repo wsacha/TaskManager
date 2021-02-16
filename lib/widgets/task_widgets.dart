@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-Widget todoAppBar(int navIndex) {
+Widget taskAppBar(int navIndex) {
   switch (navIndex) {
     case 0:
       return AppBar(
@@ -18,9 +18,20 @@ Widget todoAppBar(int navIndex) {
       return AppBar(
         title: Text("Team chat"),
       );
+    case 4:
+      return AppBar(
+        title: Text("About room"),
+      );
     default:
       return AppBar(
         title: Text("My App"),
       );
   }
+}
+
+Text navText(String text) {
+  return Text(
+    text,
+    style: TextStyle(color: Colors.white, fontSize: 21),
+  );
 }

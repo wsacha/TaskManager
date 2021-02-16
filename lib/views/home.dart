@@ -9,7 +9,6 @@ import 'package:task_manager/utils/authenticate.dart';
 import 'package:task_manager/utils/sharedpreferences.dart';
 import 'package:task_manager/views/addroom_screen.dart';
 import 'package:task_manager/views/taskpool_screen.dart';
-import 'package:task_manager/widgets/task_widgets.dart';
 import 'package:task_manager/widgets/widget.dart';
 
 class HomeRoom extends StatefulWidget {
