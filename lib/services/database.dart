@@ -26,7 +26,7 @@ class DatabaseMethods {
   //ROOMS
   getListOfRooms(userName) {
     return FirebaseFirestore.instance
-        .collection('rooms')
+        .collection("rooms")
         .where("participants", arrayContains: userName)
         .snapshots();
   }
@@ -35,11 +35,23 @@ class DatabaseMethods {
     return FirebaseFirestore.instance.collection("rooms").add(room.toJson());
   }
 
+  deleteRoomFromDb(String id) {
+    return FirebaseFirestore.instance
+        .collection("rooms")
+        .where("id", isEqualTo: id)
+        .get()
+        .then((result) {
+      result.docs[0].reference.delete();
+    }).catchError((error, stackTrace) {
+      print(error);
+    });
+  }
+
   Future<String> addUserToRoom(String userName, String id, String entryKey) {
     return FirebaseFirestore.instance
-        .collection('rooms')
-        .where('id', isEqualTo: id)
-        .where('entryKey', isEqualTo: entryKey)
+        .collection("rooms")
+        .where("id", isEqualTo: id)
+        .where("entryKey", isEqualTo: entryKey)
         .limit(1)
         .get()
         .then((query) {
@@ -52,7 +64,7 @@ class DatabaseMethods {
       }
       return "User Already in room";
     }).catchError((error, stackTrace) {
-      return "invalid data";
+      return "Invalid data";
     });
   }
 

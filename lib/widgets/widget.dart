@@ -50,3 +50,28 @@ SnackBar snackBarInfo(String text) {
     duration: Duration(seconds: 3),
   );
 }
+
+decisionAlertDialog(BuildContext context, String title, String content) {
+  return showDialog(
+      context: (context),
+      builder: (context) {
+        return AlertDialog(
+          title: Text(title),
+          content: Text(content),
+          actions: [
+            FlatButton(
+              child: Text("No"),
+              onPressed: () {
+                Navigator.of(context).pop(false);
+              },
+            ),
+            FlatButton(
+              child: Text("Yes"),
+              onPressed: () {
+                Navigator.of(context).pop(true);
+              },
+            )
+          ],
+        );
+      });
+}
