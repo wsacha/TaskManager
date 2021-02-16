@@ -14,6 +14,12 @@ InputDecoration textFieldInputDecoration(String hintText) {
       enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)));
 }
 
+InputDecoration alertTextFieldInputDecoration(String hintText) {
+  return InputDecoration(
+      hintText: hintText,
+      focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Color(0xff145C9E))));
+}
+
 TextStyle simpleTextStyle() {
   return TextStyle(color: Colors.white, fontSize: 16);
 }

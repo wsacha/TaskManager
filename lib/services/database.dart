@@ -35,5 +35,26 @@ class DatabaseMethods {
     return FirebaseFirestore.instance.collection("rooms").add(room.toJson());
   }
 
+  Future<String> addUserToRoom(String userName, String id, String entryKey) {
+    return FirebaseFirestore.instance
+        .collection('rooms')
+        .where('id', isEqualTo: id)
+        .where('entryKey', isEqualTo: entryKey)
+        .limit(1)
+        .get()
+        .then((query) {
+      final doc = query.docs[0];
+      List<dynamic> participants = doc.data()["participants"];
+      if (!participants.contains(userName)) {
+        participants.add(userName);
+        doc.reference.update({'participants': participants});
+        return "User has joined to room";
+      }
+      return "User Already in room";
+    }).catchError((error, stackTrace) {
+      return "invalid data";
+    });
+  }
+
   //TASKS
 }

@@ -7,6 +7,7 @@ import 'package:task_manager/services/database.dart';
 import 'package:task_manager/utils/authenticate.dart';
 import 'package:task_manager/utils/sharedpreferences.dart';
 import 'package:task_manager/views/addroom_screen.dart';
+import 'package:task_manager/widgets/widget.dart';
 
 class HomeRoom extends StatefulWidget {
   HomeRoom({Key key}) : super(key: key);
@@ -41,10 +42,14 @@ class _HomeRoomState extends State<HomeRoom> {
         title: Text('Rooms'),
         actions: [
           GestureDetector(
-              onTap: () async {
-                await logoutUser();
-                Navigator.pushReplacement(
-                    context, MaterialPageRoute(builder: (context) => Authenticate()));
+              onTap: () {
+                logoutAlertDialog(context).then((val) async {
+                  if (val == true) {
+                    await logoutUser();
+                    Navigator.pushReplacement(
+                        context, MaterialPageRoute(builder: (context) => Authenticate()));
+                  }
+                });
               },
               child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 16), child: Icon(Icons.exit_to_app))),
@@ -83,30 +88,140 @@ class _HomeRoomState extends State<HomeRoom> {
           );
         },
       ),
-      floatingActionButton: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          FloatingActionButton(
-            heroTag: "btn1",
-            child: Icon(Icons.search),
-            onPressed: () {},
-          ),
-          SizedBox(
-            height: 15,
-          ),
-          FloatingActionButton(
-            heroTag: "btn2",
-            child: Icon(Icons.add),
-            onPressed: () {
-              var state = Provider.of<UserDataModel>(context, listen: false);
-              print("name: ${state.userName}, email: ${state.userEmail}");
-              Navigator.push(context, MaterialPageRoute(builder: (context) => AddRoom()));
-            },
-          ),
-        ],
-      ),
+      floatingActionButton: Builder(builder: (BuildContext context) {
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            FloatingActionButton(
+              heroTag: "btn1",
+              child: Icon(Icons.search),
+              onPressed: () async {
+                var message;
+                await joinRoomAlertDialog(context).then((val) async {
+                  if (val != null) {
+                    message = await databaseMethods.addUserToRoom(
+                        userData.userName, val['id'], val['entryKey']);
+                  }
+                });
+                if (message != null) {
+                  Scaffold.of(context).showSnackBar(snackBarInfo(message));
+                }
+              },
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            FloatingActionButton(
+              heroTag: "btn2",
+              child: Icon(Icons.add),
+              onPressed: () {
+                print("name: ${userData.userName}, email: ${userData.userEmail}");
+                Navigator.push(context, MaterialPageRoute(builder: (context) => AddRoom()));
+              },
+            ),
+          ],
+        );
+      }),
     );
   }
 
-  newMethod() => UserPreferenceFunctions.removeSavedValues();
+  joinRoomAlertDialog(BuildContext context) {
+    final alertKey = GlobalKey<FormState>();
+    TextEditingController idTextController = new TextEditingController();
+    TextEditingController entryKeyTextController = new TextEditingController();
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  child: AlertDialog(
+                    title: Text("Join room"),
+                    content: Column(
+                      children: [
+                        Form(
+                          key: alertKey,
+                          child: Column(
+                            children: [
+                              TextFormField(
+                                validator: (val) {
+                                  return val.isEmpty ? "Enter Room ID" : null;
+                                },
+                                controller: idTextController,
+                                decoration: alertTextFieldInputDecoration("Room ID"),
+                              ),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              TextFormField(
+                                validator: (val) {
+                                  return val.isEmpty ? "Enter Entry key" : null;
+                                },
+                                controller: entryKeyTextController,
+                                decoration: alertTextFieldInputDecoration("Entry key"),
+                              )
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                    actions: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          FlatButton(
+                            child: Text("Cancel"),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                          FlatButton(
+                            child: Text("Submit"),
+                            onPressed: () {
+                              if (alertKey.currentState.validate()) {
+                                Navigator.of(context).pop({
+                                  "id": idTextController.text.toString(),
+                                  "entryKey": entryKeyTextController.text.toString()
+                                });
+                              }
+                            },
+                          )
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
+        });
+  }
+
+  logoutAlertDialog(BuildContext context) {
+    return showDialog(
+        context: (context),
+        builder: (context) {
+          return AlertDialog(
+            title: Text("Logout"),
+            content: Text("Are you sure you want to log out?"),
+            actions: [
+              FlatButton(
+                child: Text("No"),
+                onPressed: () {
+                  Navigator.of(context).pop(false);
+                },
+              ),
+              FlatButton(
+                child: Text("Yes"),
+                onPressed: () {
+                  Navigator.of(context).pop(true);
+                },
+              )
+            ],
+          );
+        });
+  }
 }
