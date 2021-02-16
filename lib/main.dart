@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:task_manager/providers/room_model.dart';
 import 'package:task_manager/providers/user_model.dart';
 import 'package:task_manager/utils/authenticate.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -16,6 +17,9 @@ void main() async {
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(
       create: (context) => UserDataModel(userName, userEmail),
+    ),
+    ChangeNotifierProvider(
+      create: (context) => RoomModel(),
     )
   ], child: MyApp(isLoggedIn)));
 }

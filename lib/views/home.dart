@@ -1,12 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:task_manager/providers/room_model.dart';
 import 'package:task_manager/providers/user_model.dart';
 import 'package:task_manager/services/auth.dart';
 import 'package:task_manager/services/database.dart';
 import 'package:task_manager/utils/authenticate.dart';
 import 'package:task_manager/utils/sharedpreferences.dart';
 import 'package:task_manager/views/addroom_screen.dart';
+import 'package:task_manager/views/taskpool_screen.dart';
+import 'package:task_manager/widgets/task_widgets.dart';
 import 'package:task_manager/widgets/widget.dart';
 
 class HomeRoom extends StatefulWidget {
@@ -89,7 +92,14 @@ class _HomeRoomState extends State<HomeRoom> {
                         });
                       },
                       onTap: () {
-                        print(doc.data()["id"]);
+                        final roomData = Provider.of<RoomModel>(context, listen: false);
+                        print("${roomData.id} , ${roomData.isOwner} ");
+                        roomData.id = doc.data()["id"];
+                        if (userData.userName == doc.data()["owner"]) {
+                          roomData.isOwner = true;
+                        }
+                        Navigator.pushReplacement(
+                            context, MaterialPageRoute(builder: (context) => TaskPool()));
                       },
                       tileColor: Colors.lightBlue[300],
                       title: Text(doc.data()["roomTitle"] ?? "title"),
