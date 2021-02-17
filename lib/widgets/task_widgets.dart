@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:task_manager/models/room.dart';
 
 Widget taskAppBar(int navIndex) {
   switch (navIndex) {
@@ -33,5 +34,72 @@ Text navText(String text) {
   return Text(
     text,
     style: TextStyle(color: Colors.white, fontSize: 21),
+  );
+}
+
+Container aboutRoomInfo(BuildContext context, Room room) {
+  return Container(
+    child: Column(
+      children: [
+        Container(
+          alignment: Alignment.center,
+          child: Column(
+            children: [
+              SizedBox(
+                height: 20,
+              ),
+              Icon(
+                Icons.info_outline,
+                color: Colors.white,
+                size: 60,
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Text(
+                room.roomTitle,
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Text(
+                room.description,
+                style: TextStyle(color: Colors.white, fontSize: 15),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+            ],
+          ),
+        ),
+        Expanded(
+          child: ListView(
+            children: [
+              Divider(color: Colors.grey.shade400),
+              infoListTile("ID", room.id),
+              Divider(color: Colors.grey.shade400),
+              infoListTile("Entry key", room.entryKey),
+              Divider(color: Colors.grey.shade400),
+              infoListTile("Owner", room.owner),
+              Divider(color: Colors.grey.shade400),
+              infoListTile("Number of members", room.participants.length.toString()),
+              Divider(color: Colors.grey.shade400)
+            ],
+          ),
+        )
+      ],
+    ),
+  );
+}
+
+ListTile infoListTile(String title, String text) {
+  return ListTile(
+    dense: true,
+    title: Text(
+      title,
+      style: TextStyle(color: Colors.white, fontSize: 20),
+    ),
+    subtitle: Text(text, style: TextStyle(color: Colors.white70, fontSize: 15)),
   );
 }

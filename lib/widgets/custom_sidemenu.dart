@@ -24,7 +24,7 @@ class CustomSideNav extends StatelessWidget {
               children: [
                 ListTile(
                   leading: Icon(
-                    Icons.library_books_rounded,
+                    Icons.assignment,
                     color: Colors.white,
                   ),
                   title: navText("Task pool"),

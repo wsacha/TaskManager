@@ -69,7 +69,6 @@ class _HomeRoomState extends State<HomeRoom> {
                   children: snapshot.data.docs.map((DocumentSnapshot doc) {
                     return Card(
                       child: ListTile(
-                        focusColor: Colors.red,
                         onLongPress: () {
                           decisionAlertDialog(context, "Delete room",
                                   "Are you sure you want to delete this room?")

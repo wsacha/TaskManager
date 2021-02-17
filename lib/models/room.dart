@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Room {
   String id;
   String roomTitle;
@@ -28,5 +30,32 @@ class Room {
       data['participants'] = [];
     }
     return data;
+  }
+
+  Room.fromDocumentSnapshot({DocumentSnapshot documentSnapshot}) {
+    id = documentSnapshot.id;
+    roomTitle = documentSnapshot.data()["roomTitle"];
+    description = documentSnapshot.data()["description"];
+    entryKey = documentSnapshot.data()["entryKey"];
+    owner = documentSnapshot.data()["owner"];
+    if (documentSnapshot.data()['participants'] != null) {
+      participants = List<String>.from(
+        documentSnapshot.data()['participants'].map(
+              (e) => (e),
+            ),
+      );
+    }
+  }
+  Room.fromQuerySnapshot({QuerySnapshot querySnapshot}) {
+    id = querySnapshot.docs[0].data()["id"];
+    roomTitle = querySnapshot.docs[0].data()["roomTitle"];
+    description = querySnapshot.docs[0].data()["description"];
+    entryKey = querySnapshot.docs[0].data()["entryKey"];
+    owner = querySnapshot.docs[0].data()["owner"];
+    if (querySnapshot.docs[0].data()["id"] != null) {
+      participants = List<String>.from(querySnapshot.docs[0].data()["participants"].map(
+            (e) => (e),
+          ));
+    }
   }
 }

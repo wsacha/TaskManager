@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:task_manager/views/home.dart';
+import 'package:task_manager/views/tasks_screens/roominfo_screen.dart';
 import 'package:task_manager/widgets/custom_sidemenu.dart';
 import 'package:task_manager/widgets/task_widgets.dart';
 
@@ -52,6 +53,9 @@ class _TaskPoolState extends State<TaskPool> {
                     style: TextStyle(color: Colors.white),
                   ),
                 );
+              case 4:
+                return RoomInfo();
+
               default:
                 return Center(
                   child: Text(
