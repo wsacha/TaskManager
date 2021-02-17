@@ -19,4 +19,9 @@ class RoomModel extends ChangeNotifier {
     _isOwner = value;
     notifyListeners();
   }
+
+  resetValues() {
+    _id = "";
+    _isOwner = false;
+  }
 }

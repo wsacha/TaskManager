@@ -27,7 +27,7 @@ class _HomeRoomState extends State<HomeRoom> {
   AuthMethods authMethods = new AuthMethods();
   DatabaseMethods databaseMethods = new DatabaseMethods();
 
-  logoutUser() async {
+  logoutUserAndClearDataInProvider() async {
     var state = Provider.of<UserDataModel>(context, listen: false);
     state.userName = "";
     state.userEmail = "";
@@ -39,115 +39,112 @@ class _HomeRoomState extends State<HomeRoom> {
   @override
   Widget build(BuildContext context) {
     final userData = Provider.of<UserDataModel>(context, listen: false);
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Rooms'),
-        actions: [
-          GestureDetector(
-              onTap: () {
-                decisionAlertDialog(context, "Logout", "Are you sure you want to to log out?")
-                    .then((val) async {
-                  if (val == true) {
-                    await logoutUser();
-                    Navigator.pushReplacement(
-                        context, MaterialPageRoute(builder: (context) => Authenticate()));
-                  }
-                });
-              },
-              child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 16), child: Icon(Icons.exit_to_app))),
-        ],
-      ),
-      body: StreamBuilder(
-        stream: databaseMethods.getListOfRooms(userData.userName),
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (!snapshot.hasData) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-
-          return Container(
-            width: MediaQuery.of(context).size.width,
-            child: ListView(
-                padding: EdgeInsets.all(12),
-                children: snapshot.data.docs.map((DocumentSnapshot doc) {
-                  return Card(
-                    child: ListTile(
-                      focusColor: Colors.red,
-                      onLongPress: () {
-                        decisionAlertDialog(context, "Delete room",
-                                "Are you sure you want to delete this room?")
-                            .then((val) async {
-                          if ((val == true) &&
-                              (userData.userName == doc.data()["owner"].toString())) {
-                            databaseMethods.deleteRoomFromDb(doc.data()["id"]);
-                            Scaffold.of(context)
-                                .showSnackBar(snackBarInfo("Room deleted successfully"));
-                          } else if (userData.userName != doc.data()["owner"].toString()) {
-                            Scaffold.of(context).showSnackBar(
-                                snackBarInfo("You don't have permission to delete this room"));
-                          }
-                        });
-                      },
-                      onTap: () {
-                        final roomData = Provider.of<RoomModel>(context, listen: false);
-                        print("${roomData.id} , ${roomData.isOwner} ");
-                        roomData.id = doc.data()["id"];
-                        if (userData.userName == doc.data()["owner"]) {
-                          roomData.isOwner = true;
-                        }
-                        Navigator.pushReplacement(
-                            context, MaterialPageRoute(builder: (context) => TaskPool()));
-                      },
-                      tileColor: Colors.lightBlue[300],
-                      title: Text(doc.data()["roomTitle"] ?? "title"),
-                      subtitle: Text(doc.data()["description"] ?? "no data"),
-                      trailing: Icon(
-                        Icons.arrow_forward_outlined,
-                        size: 30,
-                        color: Colors.white,
-                      ),
-                    ),
-                  );
-                }).toList()),
-          );
-        },
-      ),
-      floatingActionButton: Builder(builder: (BuildContext context) {
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            FloatingActionButton(
-              heroTag: "btn1",
-              child: Icon(Icons.search),
-              onPressed: () async {
-                var message;
-                await joinRoomAlertDialog(context).then((val) async {
-                  if (val != null) {
-                    message = await databaseMethods.addUserToRoom(
-                        userData.userName, val['id'], val['entryKey']);
-                  }
-                });
-                if (message != null) {
-                  Scaffold.of(context).showSnackBar(snackBarInfo(message));
-                }
-              },
-            ),
-            SizedBox(
-              height: 15,
-            ),
-            FloatingActionButton(
-              heroTag: "btn2",
-              child: Icon(Icons.add),
-              onPressed: () {
-                print("name: ${userData.userName}, email: ${userData.userEmail}");
-                Navigator.push(context, MaterialPageRoute(builder: (context) => AddRoom()));
-              },
-            ),
+    return WillPopScope(
+      onWillPop: () => _logoutUser(context),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Rooms'),
+          actions: [
+            GestureDetector(
+                onTap: () {
+                  _logoutUser(context);
+                },
+                child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 16), child: Icon(Icons.exit_to_app))),
           ],
-        );
-      }),
+        ),
+        body: StreamBuilder(
+          stream: databaseMethods.getListOfRooms(userData.userName),
+          builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (!snapshot.hasData) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+
+            return Container(
+              width: MediaQuery.of(context).size.width,
+              child: ListView(
+                  padding: EdgeInsets.all(12),
+                  children: snapshot.data.docs.map((DocumentSnapshot doc) {
+                    return Card(
+                      child: ListTile(
+                        focusColor: Colors.red,
+                        onLongPress: () {
+                          decisionAlertDialog(context, "Delete room",
+                                  "Are you sure you want to delete this room?")
+                              .then((val) async {
+                            if ((val == true) &&
+                                (userData.userName == doc.data()["owner"].toString())) {
+                              databaseMethods.deleteRoomFromDb(doc.data()["id"]);
+                              Scaffold.of(context)
+                                  .showSnackBar(snackBarInfo("Room deleted successfully"));
+                            } else if (userData.userName != doc.data()["owner"].toString()) {
+                              Scaffold.of(context).showSnackBar(
+                                  snackBarInfo("You don't have permission to delete this room"));
+                            }
+                          });
+                        },
+                        onTap: () async {
+                          final roomData = Provider.of<RoomModel>(context, listen: false);
+                          await roomData.resetValues();
+                          print("${roomData.id} , ${roomData.isOwner} ");
+                          roomData.id = doc.data()["id"];
+                          if (userData.userName == doc.data()["owner"]) {
+                            roomData.isOwner = true;
+                          }
+                          Navigator.pushReplacement(
+                              context, MaterialPageRoute(builder: (context) => TaskPool()));
+                        },
+                        tileColor: Colors.lightBlue[300],
+                        title: Text(doc.data()["roomTitle"] ?? "title"),
+                        subtitle: Text(doc.data()["description"] ?? "no data"),
+                        trailing: Icon(
+                          Icons.arrow_forward_outlined,
+                          size: 30,
+                          color: Colors.white,
+                        ),
+                      ),
+                    );
+                  }).toList()),
+            );
+          },
+        ),
+        floatingActionButton: Builder(builder: (BuildContext context) {
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              FloatingActionButton(
+                heroTag: "btn1",
+                child: Icon(Icons.search),
+                onPressed: () async {
+                  var message;
+                  await joinRoomAlertDialog(context).then((val) async {
+                    if (val != null) {
+                      message = await databaseMethods.addUserToRoom(
+                          userData.userName, val['id'], val['entryKey']);
+                    }
+                  });
+                  if (message != null) {
+                    Scaffold.of(context).showSnackBar(snackBarInfo(message));
+                  }
+                },
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              FloatingActionButton(
+                heroTag: "btn2",
+                child: Icon(Icons.add),
+                onPressed: () {
+                  print("name: ${userData.userName}, email: ${userData.userEmail}");
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => AddRoom()));
+                },
+              ),
+            ],
+          );
+        }),
+      ),
     );
   }
 
@@ -224,5 +221,16 @@ class _HomeRoomState extends State<HomeRoom> {
             ),
           );
         });
+  }
+
+  Future<bool> _logoutUser(BuildContext context) {
+    decisionAlertDialog(context, "Logout", "Are you sure you want to to log out?")
+        .then((val) async {
+      if (val == true) {
+        await logoutUserAndClearDataInProvider();
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Authenticate()));
+      }
+    });
+    return Future.value(false);
   }
 }

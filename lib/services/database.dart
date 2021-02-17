@@ -24,6 +24,10 @@ class DatabaseMethods {
   }
 
   //ROOMS
+  getRoomInfo(String id) {
+    return FirebaseFirestore.instance.collection("rooms").where("id", isEqualTo: id).get();
+  }
+
   getListOfRooms(userName) {
     return FirebaseFirestore.instance
         .collection("rooms")
