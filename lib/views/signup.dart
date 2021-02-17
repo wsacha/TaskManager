@@ -65,6 +65,8 @@ class _SignUpState extends State<SignUp> {
           message = message;
         });
       }
+    } else {
+      message = "Please provide proper data";
     }
   }
 
@@ -137,7 +139,7 @@ class _SignUpState extends State<SignUp> {
                                   TextFormField(
                                     obscureText: true,
                                     validator: (val) {
-                                      return val.length > 6
+                                      return val.length >= 6
                                           ? null
                                           : "Password must have at least 6 characters";
                                     },

@@ -36,19 +36,15 @@ class DatabaseMethods {
   }
 
   addRoomToDb(Room room) {
-    return FirebaseFirestore.instance.collection("rooms").add(room.toJson());
+    return FirebaseFirestore.instance.collection("rooms").doc(room.id).set(room.toJson());
   }
 
   deleteRoomFromDb(String id) {
     return FirebaseFirestore.instance
         .collection("rooms")
-        .where("id", isEqualTo: id)
-        .get()
-        .then((result) {
-      result.docs[0].reference.delete();
-    }).catchError((error, stackTrace) {
-      print(error);
-    });
+        .doc(id)
+        .delete()
+        .catchError((val) => null);
   }
 
   Future<String> addUserToRoom(String userName, String id, String entryKey) {

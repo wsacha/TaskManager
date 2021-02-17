@@ -101,7 +101,7 @@ class _SignInState extends State<SignIn> {
                                   TextFormField(
                                     obscureText: true,
                                     validator: (val) {
-                                      return val.length > 6
+                                      return val.length >= 6
                                           ? null
                                           : "Password must have at least 6 characters";
                                     },

@@ -23,7 +23,7 @@ class _AddRoomState extends State<AddRoom> {
   addRoom(String userName) async {
     if (formKey.currentState.validate()) {
       Room room = new Room(
-          id: DateTime.now().millisecondsSinceEpoch.remainder(1000000).toString(),
+          id: DateTime.now().millisecondsSinceEpoch.remainder(10000000).toString(),
           roomTitle: roomTitleTextEditingController.text,
           description: descriptionTextEditingController.text,
           entryKey: entryKeyTextEditingController.text,
