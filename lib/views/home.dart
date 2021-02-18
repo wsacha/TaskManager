@@ -50,7 +50,11 @@ class _HomeRoomState extends State<HomeRoom> {
                   _logoutUser(context);
                 },
                 child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 16), child: Icon(Icons.exit_to_app))),
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    child: Icon(
+                      Icons.exit_to_app,
+                      size: 30,
+                    ))),
           ],
         ),
         body: StreamBuilder(

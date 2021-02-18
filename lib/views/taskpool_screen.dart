@@ -28,7 +28,7 @@ class _TaskPoolState extends State<TaskPool> {
           builder: (context) {
             switch (navIndex) {
               case 0:
-                return Tasks();
+                return Tasks(true);
               case 1:
                 return Center(
                   child: Text(
