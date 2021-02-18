@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:task_manager/views/home.dart';
+import 'package:task_manager/views/tasks_screens/Tasks_screen.dart';
+import 'package:task_manager/views/tasks_screens/addtask_screen.dart';
 import 'package:task_manager/views/tasks_screens/roominfo_screen.dart';
 import 'package:task_manager/widgets/custom_sidemenu.dart';
 import 'package:task_manager/widgets/task_widgets.dart';
@@ -26,12 +28,7 @@ class _TaskPoolState extends State<TaskPool> {
           builder: (context) {
             switch (navIndex) {
               case 0:
-                return Center(
-                  child: Text(
-                    "Task Pool",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                );
+                return Tasks();
               case 1:
                 return Center(
                   child: Text(
@@ -62,6 +59,47 @@ class _TaskPoolState extends State<TaskPool> {
                     "My App",
                     style: TextStyle(color: Colors.white),
                   ),
+                );
+            }
+          },
+        ),
+        floatingActionButton: Builder(
+          builder: (context) {
+            switch (navIndex) {
+              case 0:
+                {
+                  return FloatingActionButton(
+                    child: Icon(Icons.add),
+                    onPressed: () {
+                      print("task pool");
+                      Navigator.push(
+                          context, MaterialPageRoute(builder: (context) => AddTask(true)));
+                    },
+                  );
+                }
+              case 1:
+                {
+                  return FloatingActionButton(
+                    child: Icon(Icons.add),
+                    onPressed: () {
+                      print("my tasks");
+                    },
+                  );
+                }
+              case 2:
+                {
+                  return FloatingActionButton(
+                    child: Icon(Icons.add),
+                    onPressed: () {
+                      print("Add user");
+                    },
+                  );
+                }
+
+              default:
+                return Container(
+                  height: 0,
+                  width: 0,
                 );
             }
           },

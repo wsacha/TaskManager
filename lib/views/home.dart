@@ -96,8 +96,14 @@ class _HomeRoomState extends State<HomeRoom> {
                               context, MaterialPageRoute(builder: (context) => TaskPool()));
                         },
                         tileColor: Colors.lightBlue[300],
-                        title: Text(doc.data()["roomTitle"] ?? "title"),
-                        subtitle: Text(doc.data()["description"] ?? "no data"),
+                        title: Text(
+                          doc.data()["roomTitle"] ?? "title",
+                          style: TextStyle(fontSize: 20),
+                        ),
+                        subtitle: Text(
+                          doc.data()["description"] ?? "no data",
+                          style: TextStyle(fontSize: 15),
+                        ),
                         trailing: Icon(
                           Icons.arrow_forward_outlined,
                           size: 30,

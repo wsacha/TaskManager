@@ -44,17 +44,17 @@ class CustomSideNav extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    Icons.library_books_rounded,
+                    Icons.people,
                     color: Colors.white,
                   ),
-                  title: navText("Team members' tasks"),
+                  title: navText("Members"),
                   onTap: () {
                     navItemClicked(context, 2);
                   },
                 ),
                 ListTile(
                   leading: Icon(
-                    Icons.people,
+                    Icons.chat,
                     color: Colors.white,
                   ),
                   title: navText("Team chat"),

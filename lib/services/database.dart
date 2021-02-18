@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:task_manager/models/room.dart';
+import 'package:task_manager/models/task.dart';
 
 class DatabaseMethods {
   //USER
@@ -69,4 +70,16 @@ class DatabaseMethods {
   }
 
   //TASKS
+  addTaskToDb(Task task) {
+    return FirebaseFirestore.instance.collection("tasks").doc(task.id).set(task.toJson());
+  }
+
+  getTaskPool(String roomId, String attachedTo) {
+    return FirebaseFirestore.instance
+        .collection("tasks")
+        .where("roomId", isEqualTo: roomId)
+        .where("attachedTo", isEqualTo: attachedTo)
+        .orderBy("expirationDate", descending: false)
+        .snapshots();
+  }
 }
