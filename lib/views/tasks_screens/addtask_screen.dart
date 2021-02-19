@@ -28,7 +28,7 @@ class _AddTaskState extends State<AddTask> {
       _dateTime =
           new DateTime(_dateTime.year, _dateTime.month, _dateTime.day, _time.hour, _time.minute);
       Task task = new Task(
-          id: DateTime.now().millisecondsSinceEpoch.remainder(10000000).toString(),
+          id: DateTime.now().millisecondsSinceEpoch.remainder(100000000).toString(),
           roomId: roomId,
           title: taskTitleTextEditingController.text,
           description: descriptionTextEditingController.text,

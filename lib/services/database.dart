@@ -36,7 +36,7 @@ class DatabaseMethods {
         .snapshots();
   }
 
-  getListOfParticipants(String id) {
+  getRoomById(String id) {
     return FirebaseFirestore.instance.collection("rooms").doc(id).snapshots();
   }
 

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:task_manager/providers/room_model.dart';
 import 'package:task_manager/views/home.dart';
 import 'package:task_manager/views/tasks_screens/Tasks_screen.dart';
 import 'package:task_manager/views/tasks_screens/addtask_screen.dart';
+import 'package:task_manager/views/tasks_screens/members_screen.dart';
 import 'package:task_manager/views/tasks_screens/roominfo_screen.dart';
 import 'package:task_manager/widgets/custom_sidemenu.dart';
 import 'package:task_manager/widgets/task_widgets.dart';
@@ -16,6 +19,8 @@ class _TaskPoolState extends State<TaskPool> {
   int navIndex = 0;
   @override
   Widget build(BuildContext context) {
+    final roomData = Provider.of<RoomModel>(context, listen: false);
+
     return WillPopScope(
       onWillPop: () => _moveToRoomsScreen(context),
       child: Scaffold(
@@ -33,12 +38,7 @@ class _TaskPoolState extends State<TaskPool> {
               case 1:
                 return Tasks(false);
               case 2:
-                return Center(
-                  child: Text(
-                    "Team members' tasks",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                );
+                return Members();
               case 3:
                 return Center(
                   child: Text(
@@ -92,14 +92,18 @@ class _TaskPoolState extends State<TaskPool> {
                 }
               case 2:
                 {
-                  return FloatingActionButton(
-                    child: Icon(Icons.add),
-                    onPressed: () {
-                      print("Add user");
-                    },
-                  );
+                  return roomData.isOwner
+                      ? FloatingActionButton(
+                          child: Icon(Icons.add),
+                          onPressed: () {
+                            print("Add user");
+                          },
+                        )
+                      : Container(
+                          height: 0,
+                          width: 0,
+                        );
                 }
-
               default:
                 return Container(
                   height: 0,
