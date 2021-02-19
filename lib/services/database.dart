@@ -73,6 +73,17 @@ class DatabaseMethods {
     });
   }
 
+  Future<String> addUserByAdminToRoom(String id, String userName) async {
+    try {
+      await FirebaseFirestore.instance.collection("rooms").doc(id).update({
+        "participants": FieldValue.arrayUnion([userName])
+      });
+      return "User added";
+    } catch (e) {
+      return Future.error("error $e");
+    }
+  }
+
   //TASKS
   addTaskToDb(Task task) {
     return FirebaseFirestore.instance.collection("tasks").doc(task.id).set(task.toJson());

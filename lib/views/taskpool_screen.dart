@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:task_manager/providers/room_model.dart';
+import 'package:task_manager/services/database.dart';
 import 'package:task_manager/views/home.dart';
 import 'package:task_manager/views/tasks_screens/Tasks_screen.dart';
 import 'package:task_manager/views/tasks_screens/addtask_screen.dart';
@@ -16,6 +18,7 @@ class TaskPool extends StatefulWidget {
 }
 
 class _TaskPoolState extends State<TaskPool> {
+  DatabaseMethods databaseMethods = new DatabaseMethods();
   int navIndex = 0;
   @override
   Widget build(BuildContext context) {
@@ -95,8 +98,22 @@ class _TaskPoolState extends State<TaskPool> {
                   return roomData.isOwner
                       ? FloatingActionButton(
                           child: Icon(Icons.add),
-                          onPressed: () {
-                            print("Add user");
+                          onPressed: () async {
+                            String message;
+                            String enteredName = await _addUserAlertDialog(context);
+                            if (enteredName != null) {
+                              QuerySnapshot checkExistingData =
+                                  await databaseMethods.getUserByUserName(enteredName);
+                              if (checkExistingData.docs.isNotEmpty) {
+                                message = await databaseMethods.addUserByAdminToRoom(
+                                    roomData.id, enteredName);
+                              } else {
+                                message = "User does not exist";
+                              }
+                            }
+                            if (message != null) {
+                              Scaffold.of(context).showSnackBar(snackBarInfo(message));
+                            }
                           },
                         )
                       : Container(
@@ -119,5 +136,57 @@ class _TaskPoolState extends State<TaskPool> {
   Future<bool> _moveToRoomsScreen(BuildContext context) {
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeRoom()));
     return Future.value(false);
+  }
+
+  Future<String> _addUserAlertDialog(BuildContext context) async {
+    final alertKey = GlobalKey<FormState>();
+    TextEditingController userNameTextEditingController = new TextEditingController();
+    return await showDialog(
+      context: context,
+      builder: (context) {
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              child: AlertDialog(
+                title: Text("Add user"),
+                content: Form(
+                  key: alertKey,
+                  child: TextFormField(
+                    validator: (val) {
+                      return val.isEmpty ? "Enter user name" : null;
+                    },
+                    controller: userNameTextEditingController,
+                    decoration: alertTextFieldInputDecoration("User name"),
+                  ),
+                ),
+                actions: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      FlatButton(
+                        child: Text("Cancel"),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                      FlatButton(
+                        child: Text("Submit"),
+                        onPressed: () {
+                          if (alertKey.currentState.validate()) {
+                            Navigator.pop(context, userNameTextEditingController.text);
+                          }
+                        },
+                      )
+                    ],
+                  )
+                ],
+              ),
+            )
+          ],
+        );
+      },
+    );
   }
 }
