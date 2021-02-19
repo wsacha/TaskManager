@@ -30,12 +30,7 @@ class _TaskPoolState extends State<TaskPool> {
               case 0:
                 return Tasks(true);
               case 1:
-                return Center(
-                  child: Text(
-                    "My tasks",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                );
+                return Tasks(false);
               case 2:
                 return Center(
                   child: Text(

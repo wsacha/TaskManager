@@ -36,6 +36,10 @@ class DatabaseMethods {
         .snapshots();
   }
 
+  getListOfParticipants(String id) {
+    return FirebaseFirestore.instance.collection("rooms").doc(id).snapshots();
+  }
+
   addRoomToDb(Room room) {
     return FirebaseFirestore.instance.collection("rooms").doc(room.id).set(room.toJson());
   }
@@ -74,11 +78,12 @@ class DatabaseMethods {
     return FirebaseFirestore.instance.collection("tasks").doc(task.id).set(task.toJson());
   }
 
-  getTaskPool(String roomId, String attachedTo) {
+  getTaskPool(String roomId, String attachedTo, bool isDone) {
     return FirebaseFirestore.instance
         .collection("tasks")
         .where("roomId", isEqualTo: roomId)
         .where("attachedTo", isEqualTo: attachedTo)
+        .where("isDone", isEqualTo: isDone)
         .orderBy("expirationDate", descending: false)
         .snapshots();
   }
@@ -89,5 +94,18 @@ class DatabaseMethods {
         .doc(id)
         .delete()
         .catchError((val) => null);
+  }
+
+  Future<void> attachTaskToUser(String id, String userName) {
+    return FirebaseFirestore.instance
+        .collection("tasks")
+        .doc(id)
+        .update({"attachedTo": userName})
+        .then((value) => print("User updated"))
+        .catchError((error) => print("failed to update user: $error"));
+  }
+
+  markTaskAsDone(String id) {
+    return FirebaseFirestore.instance.collection("tasks").doc(id).update({"isDone": true});
   }
 }

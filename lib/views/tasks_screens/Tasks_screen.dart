@@ -22,7 +22,7 @@ class Tasks extends StatelessWidget {
     return Container(
         child: StreamBuilder(
             stream: databaseMethods.getTaskPool(
-                roomData.id, isTaskPoolScreen ? "none" : userData.userName),
+                roomData.id, isTaskPoolScreen ? "none" : userData.userName, false),
             builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
               if (!snapshot.hasData) {
                 return Center(
@@ -69,6 +69,8 @@ class Tasks extends StatelessWidget {
   }
 
   _showTaskActions(BuildContext context, Task task) {
+    final userData = Provider.of<UserDataModel>(context, listen: false);
+    final roomData = Provider.of<RoomModel>(context, listen: false);
     return CupertinoActionSheet(
       title: Text(
         "Choose action",
@@ -76,8 +78,17 @@ class Tasks extends StatelessWidget {
       ),
       actions: [
         CupertinoActionSheetAction(
-          child: Text("Take a task"),
-          onPressed: () {},
+          child: isTaskPoolScreen ? Text("Take a task") : Text("Mark task as done"),
+          onPressed: () {
+            if (isTaskPoolScreen) {
+              databaseMethods.attachTaskToUser(task.id, userData.userName);
+            } else {
+              databaseMethods.markTaskAsDone(task.id);
+            }
+            Scaffold.of(context)
+                .showSnackBar(snackBarInfo(isTaskPoolScreen ? "Task taken" : "Task completed"));
+            Navigator.pop(context);
+          },
           isDefaultAction: true,
         ),
         CupertinoActionSheetAction(
@@ -91,8 +102,6 @@ class Tasks extends StatelessWidget {
             await decisionAlertDialog(context, "Delete task", "Do you want to delete this Task?")
                 .then((val) {
               if (val == true) {
-                final userData = Provider.of<UserDataModel>(context, listen: false);
-                final roomData = Provider.of<RoomModel>(context, listen: false);
                 if (userData.userName == task.createdBy || roomData.isOwner == true) {
                   print(
                       "${userData.userName} , ${task.createdBy} , ${roomData.isOwner.toString()}");
