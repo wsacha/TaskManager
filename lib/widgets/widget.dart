@@ -51,8 +51,8 @@ SnackBar snackBarInfo(String text) {
   );
 }
 
-decisionAlertDialog(BuildContext context, String title, String content) {
-  return showDialog(
+Future<bool> decisionAlertDialog(BuildContext context, String title, String content) async {
+  return await showDialog(
       context: (context),
       builder: (context) {
         return AlertDialog(

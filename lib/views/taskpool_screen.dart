@@ -74,7 +74,7 @@ class _TaskPoolState extends State<TaskPool> {
                       var isAdded = await Navigator.push(
                           context, MaterialPageRoute(builder: (context) => AddTask(true)));
                       if (isAdded != null) {
-                        Scaffold.of(context).showSnackBar(snackBarInfo("Task has been edited"));
+                        Scaffold.of(context).showSnackBar(snackBarInfo("Task has been added"));
                       }
                     },
                   );
@@ -88,7 +88,7 @@ class _TaskPoolState extends State<TaskPool> {
                       var isAdded = await Navigator.push(
                           context, MaterialPageRoute(builder: (context) => AddTask(false)));
                       if (isAdded != null) {
-                        Scaffold.of(context).showSnackBar(snackBarInfo("Task has been edited"));
+                        Scaffold.of(context).showSnackBar(snackBarInfo("Task has been added"));
                       }
                     },
                   );

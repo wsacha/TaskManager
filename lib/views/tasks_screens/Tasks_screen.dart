@@ -120,19 +120,18 @@ class Tasks extends StatelessWidget {
         CupertinoActionSheetAction(
           child: Text("Delete task"),
           onPressed: () async {
-            await decisionAlertDialog(context, "Delete task", "Do you want to delete this Task?")
-                .then((val) {
-              if (val == true) {
-                if (userData.userName == task.createdBy || roomData.isOwner == true) {
-                  print(
-                      "${userData.userName} , ${task.createdBy} , ${roomData.isOwner.toString()}");
-                  databaseMethods.deleteTaskFromDb(task.id);
-                } else {
-                  Scaffold.of(context)
-                      .showSnackBar(snackBarInfo("You don't have permission to delete this task"));
-                }
+            var decision = await decisionAlertDialog(
+                context, "Delete task", "Do you want to delete this Task?");
+            if (decision == true) {
+              if (userData.userName == task.createdBy || roomData.isOwner == true) {
+                print("${userData.userName} , ${task.createdBy} , ${roomData.isOwner.toString()}");
+                databaseMethods.deleteTaskFromDb(task.id);
+              } else {
+                Scaffold.of(context)
+                    .showSnackBar(snackBarInfo("You don't have permission to delete this task"));
               }
-            });
+            }
+
             Navigator.pop(context);
           },
           isDestructiveAction: true,
