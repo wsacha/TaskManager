@@ -232,14 +232,14 @@ class _HomeRoomState extends State<HomeRoom> {
         });
   }
 
-  Future<bool> _logoutUser(BuildContext context) {
-    decisionAlertDialog(context, "Logout", "Are you sure you want to to log out?")
-        .then((val) async {
-      if (val == true) {
-        await logoutUserAndClearDataInProvider();
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Authenticate()));
-      }
-    });
+  Future<bool> _logoutUser(BuildContext context) async {
+    bool decision =
+        await decisionAlertDialog(context, "Logout", "Are you sure you want to to log out?");
+    if (decision == true) {
+      await logoutUserAndClearDataInProvider();
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Authenticate()));
+    }
+
     return Future.value(false);
   }
 }
