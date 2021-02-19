@@ -108,4 +108,17 @@ class DatabaseMethods {
   markTaskAsDone(String id) {
     return FirebaseFirestore.instance.collection("tasks").doc(id).update({"isDone": true});
   }
+
+  Future<void> updateTaskData(String id, String title, String description, DateTime updatedDate) {
+    return FirebaseFirestore.instance
+        .collection("tasks")
+        .doc(id)
+        .update({
+          "title": title,
+          "description": description,
+          "expirationDate": Timestamp.fromDate(updatedDate)
+        })
+        .then((value) => print("User updated"))
+        .catchError((error) => print("failed to update user: $error"));
+  }
 }

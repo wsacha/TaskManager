@@ -6,6 +6,7 @@ import 'package:task_manager/models/task.dart';
 import 'package:task_manager/providers/room_model.dart';
 import 'package:task_manager/providers/user_model.dart';
 import 'package:task_manager/services/database.dart';
+import 'package:task_manager/views/tasks_screens/edittask_screen.dart';
 import 'package:task_manager/widgets/task_widgets.dart';
 import 'package:task_manager/widgets/widget.dart';
 
@@ -100,7 +101,20 @@ class Tasks extends StatelessWidget {
         ),
         CupertinoActionSheetAction(
           child: Text("Edit task"),
-          onPressed: () {},
+          onPressed: () async {
+            if (userData.userName == task.createdBy || roomData.isOwner == true) {
+              print("${userData.userName} , ${task.createdBy} , ${roomData.isOwner.toString()}");
+              var isAdded = await Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => EditTask(task)));
+              if (isAdded != null) {
+                Scaffold.of(context).showSnackBar(snackBarInfo("Task has been edited"));
+              }
+            } else {
+              Scaffold.of(context)
+                  .showSnackBar(snackBarInfo("You don't have permission to edit this task"));
+            }
+            Navigator.pop(context);
+          },
           isDefaultAction: true,
         ),
         CupertinoActionSheetAction(

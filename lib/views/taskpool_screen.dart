@@ -5,6 +5,7 @@ import 'package:task_manager/views/tasks_screens/addtask_screen.dart';
 import 'package:task_manager/views/tasks_screens/roominfo_screen.dart';
 import 'package:task_manager/widgets/custom_sidemenu.dart';
 import 'package:task_manager/widgets/task_widgets.dart';
+import 'package:task_manager/widgets/widget.dart';
 
 class TaskPool extends StatefulWidget {
   @override
@@ -65,10 +66,13 @@ class _TaskPoolState extends State<TaskPool> {
                 {
                   return FloatingActionButton(
                     child: Icon(Icons.add),
-                    onPressed: () {
+                    onPressed: () async {
                       print("task pool");
-                      Navigator.push(
+                      var isAdded = await Navigator.push(
                           context, MaterialPageRoute(builder: (context) => AddTask(true)));
+                      if (isAdded != null) {
+                        Scaffold.of(context).showSnackBar(snackBarInfo("Task has been edited"));
+                      }
                     },
                   );
                 }
@@ -76,8 +80,13 @@ class _TaskPoolState extends State<TaskPool> {
                 {
                   return FloatingActionButton(
                     child: Icon(Icons.add),
-                    onPressed: () {
+                    onPressed: () async {
                       print("my tasks");
+                      var isAdded = await Navigator.push(
+                          context, MaterialPageRoute(builder: (context) => AddTask(false)));
+                      if (isAdded != null) {
+                        Scaffold.of(context).showSnackBar(snackBarInfo("Task has been edited"));
+                      }
                     },
                   );
                 }

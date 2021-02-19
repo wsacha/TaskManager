@@ -39,7 +39,7 @@ class _AddTaskState extends State<AddTask> {
 
       databaseMethods.addTaskToDb(task);
 
-      Navigator.pop(context);
+      Navigator.pop(context, true);
     }
   }
 
@@ -207,7 +207,7 @@ class _AddTaskState extends State<AddTask> {
                       padding: EdgeInsets.fromLTRB(30, 20, 30, 20),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
                       color: Color(0xff145C9E),
-                      child: Text("Add Room", style: TextStyle(color: Colors.white)),
+                      child: Text("Add task", style: TextStyle(color: Colors.white)),
                       onPressed: () async {
                         await _addTask(userData.userName, roomData.id);
                         if (_dateTime == null) {
