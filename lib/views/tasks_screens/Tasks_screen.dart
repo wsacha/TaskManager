@@ -29,42 +29,49 @@ class Tasks extends StatelessWidget {
                   child: CircularProgressIndicator(),
                 );
               }
-              return Container(
-                padding: EdgeInsets.all(12.0),
-                child: ListView.separated(
-                  itemCount: snapshot.data.docs.length,
-                  separatorBuilder: (_, int index) => Divider(
-                    height: 12,
-                  ),
-                  itemBuilder: (BuildContext context, int index) {
-                    final Task task =
-                        Task.fromDocumentSnapshot(documentSnapshot: snapshot.data.docs[index]);
-                    return Material(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Color(0xff8B4176),
-                      child: ListTile(
-                        onTap: () {
-                          taskInfoAlertDialog(context, task);
-                        },
-                        onLongPress: () {
-                          final act = _showTaskActions(context, task);
-                          showCupertinoModalPopup(
-                              context: context, builder: (BuildContext context) => act);
-                        },
-                        title: Text(
-                          task.title,
-                          style: TextStyle(color: Colors.white, fontSize: 30),
+              return snapshot.data.docs.length != 0
+                  ? Container(
+                      padding: EdgeInsets.all(12.0),
+                      child: ListView.separated(
+                        itemCount: snapshot.data.docs.length,
+                        separatorBuilder: (_, int index) => Divider(
+                          height: 12,
                         ),
-                        trailing: Icon(
-                          Icons.arrow_forward_outlined,
-                          size: 30,
-                          color: Colors.white,
-                        ),
+                        itemBuilder: (BuildContext context, int index) {
+                          final Task task = Task.fromDocumentSnapshot(
+                              documentSnapshot: snapshot.data.docs[index]);
+                          return Material(
+                            borderRadius: BorderRadius.circular(20),
+                            color: Color(0xff8B4176),
+                            child: ListTile(
+                              onTap: () {
+                                taskInfoAlertDialog(context, task);
+                              },
+                              onLongPress: () {
+                                final act = _showTaskActions(context, task);
+                                showCupertinoModalPopup(
+                                    context: context, builder: (BuildContext context) => act);
+                              },
+                              title: Text(
+                                task.title,
+                                style: TextStyle(color: Colors.white, fontSize: 30),
+                              ),
+                              trailing: Icon(
+                                Icons.arrow_forward_outlined,
+                                size: 30,
+                                color: Colors.white,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    )
+                  : Center(
+                      child: Text(
+                        "No tasks",
+                        style: TextStyle(color: Colors.white, fontSize: 30),
                       ),
                     );
-                  },
-                ),
-              );
             }));
   }
 
