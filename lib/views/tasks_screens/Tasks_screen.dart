@@ -5,6 +5,7 @@ import 'package:task_manager/models/task.dart';
 import 'package:task_manager/providers/room_model.dart';
 import 'package:task_manager/providers/user_model.dart';
 import 'package:task_manager/services/database.dart';
+import 'package:task_manager/widgets/task_widgets.dart';
 
 class Tasks extends StatelessWidget {
   final DatabaseMethods databaseMethods = new DatabaseMethods();
@@ -41,7 +42,7 @@ class Tasks extends StatelessWidget {
                       color: Color(0xff8B4176),
                       child: ListTile(
                         onTap: () {
-                          print("lol");
+                          taskInfoAlertDialog(context, task);
                         },
                         title: Text(
                           task.title,

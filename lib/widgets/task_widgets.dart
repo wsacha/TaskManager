@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:task_manager/models/room.dart';
+import 'package:task_manager/models/task.dart';
 
 Widget taskAppBar(int navIndex) {
   switch (navIndex) {
@@ -101,5 +102,44 @@ ListTile infoListTile(String title, String text) {
       style: TextStyle(color: Colors.white, fontSize: 20),
     ),
     subtitle: Text(text, style: TextStyle(color: Colors.white70, fontSize: 15)),
+  );
+}
+
+taskInfoAlertDialog(BuildContext context, Task task) {
+  return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Task Info"),
+          content: ListView(
+            children: [
+              taskInfoListTile("Title", task.title),
+              taskInfoListTile("Description", task.description),
+              taskInfoListTile("Due date", task.expirationDate.toString()),
+              taskInfoListTile("Status", task.isDone ? "done" : "to-do"),
+              taskInfoListTile("Created by", task.createdBy)
+            ],
+          ),
+          actions: [
+            FlatButton(
+              child: Text("Ok"),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      });
+}
+
+ListTile taskInfoListTile(String title, String content) {
+  return ListTile(
+    contentPadding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+    dense: true,
+    title: Text(
+      "$title:",
+      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+    ),
+    subtitle: Text(content, style: TextStyle(fontSize: 17)),
   );
 }
