@@ -82,4 +82,12 @@ class DatabaseMethods {
         .orderBy("expirationDate", descending: false)
         .snapshots();
   }
+
+  deleteTaskFromDb(String id) {
+    return FirebaseFirestore.instance
+        .collection("tasks")
+        .doc(id)
+        .delete()
+        .catchError((val) => null);
+  }
 }
