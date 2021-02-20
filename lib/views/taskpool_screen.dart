@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:task_manager/providers/room_model.dart';
 import 'package:task_manager/services/database.dart';
 import 'package:task_manager/views/home.dart';
-import 'package:task_manager/views/tasks_screens/Tasks_screen.dart';
+import 'package:task_manager/views/tasks_screens/tasks_screen.dart';
 import 'package:task_manager/views/tasks_screens/addtask_screen.dart';
 import 'package:task_manager/views/tasks_screens/members_screen.dart';
 import 'package:task_manager/views/tasks_screens/roominfo_screen.dart';
