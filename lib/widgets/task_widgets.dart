@@ -51,7 +51,7 @@ Container aboutRoomInfo(BuildContext context, Room room) {
           child: Column(
             children: [
               SizedBox(
-                height: 20,
+                height: 15,
               ),
               Icon(
                 Icons.info_outline,
@@ -59,7 +59,7 @@ Container aboutRoomInfo(BuildContext context, Room room) {
                 size: 60,
               ),
               SizedBox(
-                height: 20,
+                height: 15,
               ),
               Text(
                 room.roomTitle,
@@ -73,26 +73,24 @@ Container aboutRoomInfo(BuildContext context, Room room) {
                 style: TextStyle(color: Colors.white, fontSize: 15),
               ),
               SizedBox(
-                height: 20,
+                height: 10,
               ),
             ],
           ),
         ),
-        Expanded(
-          child: ListView(
-            children: [
-              Divider(color: Colors.grey.shade400),
-              infoListTile("ID", room.id),
-              Divider(color: Colors.grey.shade400),
-              infoListTile("Entry key", room.entryKey),
-              Divider(color: Colors.grey.shade400),
-              infoListTile("Owner", room.owner),
-              Divider(color: Colors.grey.shade400),
-              infoListTile("Number of members", room.participants.length.toString()),
-              Divider(color: Colors.grey.shade400)
-            ],
-          ),
-        )
+        Column(
+          children: [
+            Divider(color: Colors.grey.shade400),
+            infoListTile("ID", room.id),
+            Divider(color: Colors.grey.shade400),
+            infoListTile("Entry key", room.entryKey),
+            Divider(color: Colors.grey.shade400),
+            infoListTile("Owner", room.owner),
+            Divider(color: Colors.grey.shade400),
+            infoListTile("Number of members", room.participants.length.toString()),
+            Divider(color: Colors.grey.shade400)
+          ],
+        ),
       ],
     ),
   );

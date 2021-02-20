@@ -19,38 +19,45 @@ class FinishedTasks extends StatelessWidget {
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData) {
             return Center(
-              child: Text("Empty history"),
+              child: CircularProgressIndicator(),
             );
           }
-          return Container(
-            padding: EdgeInsets.all(12.0),
-            child: ListView.separated(
-              itemCount: snapshot.data.docs.length,
-              separatorBuilder: (_, int index) => Divider(color: Colors.grey.shade400),
-              itemBuilder: (BuildContext context, int index) {
-                final Task task =
-                    Task.fromDocumentSnapshot(documentSnapshot: snapshot.data.docs[index]);
-                return Material(
-                  color: Theme.of(context).scaffoldBackgroundColor,
-                  child: Container(
-                    child: ListTile(
-                      onTap: () {
-                        taskInfoAlertDialog(context, task);
-                      },
-                      title: Text(
-                        task.title,
-                        style: TextStyle(color: Colors.white, fontSize: 23),
-                      ),
-                      subtitle: Text(
-                        "Finished by: ${task.attachedTo}",
-                        style: TextStyle(color: Colors.white60, fontSize: 18),
-                      ),
-                    ),
+          return (snapshot.data.docs.length != 0)
+              ? Container(
+                  padding: EdgeInsets.all(12.0),
+                  child: ListView.separated(
+                    itemCount: snapshot.data.docs.length,
+                    separatorBuilder: (_, int index) => Divider(color: Colors.grey.shade400),
+                    itemBuilder: (BuildContext context, int index) {
+                      final Task task =
+                          Task.fromDocumentSnapshot(documentSnapshot: snapshot.data.docs[index]);
+                      return Material(
+                        color: Theme.of(context).scaffoldBackgroundColor,
+                        child: Container(
+                          child: ListTile(
+                            onTap: () {
+                              taskInfoAlertDialog(context, task);
+                            },
+                            title: Text(
+                              task.title,
+                              style: TextStyle(color: Colors.white, fontSize: 23),
+                            ),
+                            subtitle: Text(
+                              "Finished by: ${task.attachedTo}",
+                              style: TextStyle(color: Colors.white60, fontSize: 18),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                )
+              : Center(
+                  child: Text(
+                    "Empty history",
+                    style: TextStyle(color: Colors.white, fontSize: 30),
                   ),
                 );
-              },
-            ),
-          );
         },
       ),
     );

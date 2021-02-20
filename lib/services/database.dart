@@ -105,6 +105,16 @@ class DatabaseMethods {
 
   Future<String> deleteMemberOfRoom(String id, String participant) async {
     try {
+      var query = await FirebaseFirestore.instance
+          .collection("tasks")
+          .where("roomId", isEqualTo: id)
+          .where("attachedTo", isEqualTo: participant)
+          .where("isDone", isEqualTo: false)
+          .get();
+      for (var doc in query.docs) {
+        doc.reference.update({'attachedTo': "none"});
+      }
+
       await FirebaseFirestore.instance.collection("rooms").doc(id).update({
         "participants": FieldValue.arrayRemove([participant])
       });
