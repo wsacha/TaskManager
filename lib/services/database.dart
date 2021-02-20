@@ -107,29 +107,29 @@ class DatabaseMethods {
         .catchError((val) => null);
   }
 
-  Future<void> attachTaskToUser(String id, String userName) {
-    return FirebaseFirestore.instance
-        .collection("tasks")
-        .doc(id)
-        .update({"attachedTo": userName})
-        .then((value) => print("User updated"))
-        .catchError((error) => print("failed to update user: $error"));
+  void attachTaskToUser(String id, String userName) {
+    try {
+      FirebaseFirestore.instance.collection("tasks").doc(id).update({"attachedTo": userName});
+      print("task attached");
+    } catch (e) {
+      print(e);
+    }
   }
 
   markTaskAsDone(String id) {
     return FirebaseFirestore.instance.collection("tasks").doc(id).update({"isDone": true});
   }
 
-  Future<void> updateTaskData(String id, String title, String description, DateTime updatedDate) {
-    return FirebaseFirestore.instance
-        .collection("tasks")
-        .doc(id)
-        .update({
-          "title": title,
-          "description": description,
-          "expirationDate": Timestamp.fromDate(updatedDate)
-        })
-        .then((value) => print("User updated"))
-        .catchError((error) => print("failed to update user: $error"));
+  void updateTaskData(String id, String title, String description, DateTime updatedDate) {
+    try {
+      FirebaseFirestore.instance.collection("tasks").doc(id).update({
+        "title": title,
+        "description": description,
+        "expirationDate": Timestamp.fromDate(updatedDate)
+      });
+      print("User updated");
+    } catch (e) {
+      print("failed to update user: $e");
+    }
   }
 }
