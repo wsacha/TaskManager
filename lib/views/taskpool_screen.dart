@@ -97,7 +97,7 @@ class _TaskPoolState extends State<TaskPool> {
                 {
                   return roomData.isOwner
                       ? FloatingActionButton(
-                          child: Icon(Icons.add),
+                          child: Icon(Icons.person_add),
                           onPressed: () async {
                             String message;
                             String enteredName = await _addUserAlertDialog(context);

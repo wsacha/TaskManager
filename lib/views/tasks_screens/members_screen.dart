@@ -6,6 +6,7 @@ import 'package:task_manager/models/room.dart';
 import 'package:task_manager/providers/room_model.dart';
 import 'package:task_manager/providers/user_model.dart';
 import 'package:task_manager/services/database.dart';
+import 'package:task_manager/views/tasks_screens/memberinfo_screen.dart';
 import 'package:task_manager/widgets/widget.dart';
 
 class Members extends StatelessWidget {
@@ -33,7 +34,12 @@ class Members extends StatelessWidget {
                   return Material(
                     color: Theme.of(context).scaffoldBackgroundColor,
                     child: ListTile(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => MemberInfo(room.participants[index])));
+                      },
                       onLongPress: () {
                         if (roomData.isOwner == true) {
                           final act = _showMemberActions(context, room.participants[index]);

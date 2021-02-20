@@ -111,14 +111,19 @@ taskInfoAlertDialog(BuildContext context, Task task) {
       builder: (context) {
         return AlertDialog(
           title: Text("Task Info"),
-          content: ListView(
-            children: [
-              taskInfoListTile("Title", task.title),
-              taskInfoListTile("Description", task.description),
-              taskInfoListTile("Due date", task.expirationDate.toString()),
-              taskInfoListTile("Status", task.isDone ? "done" : "to-do"),
-              taskInfoListTile("Created by", task.createdBy)
-            ],
+          content: Container(
+            height: 350,
+            width: 300,
+            child: ListView(
+              shrinkWrap: true,
+              children: [
+                taskInfoListTile("Title", task.title),
+                taskInfoListTile("Description", task.description),
+                taskInfoListTile("Due date", task.expirationDate.toString()),
+                taskInfoListTile("Status", task.isDone ? "done" : "to-do"),
+                taskInfoListTile("Created by", task.createdBy)
+              ],
+            ),
           ),
           actions: [
             FlatButton(
