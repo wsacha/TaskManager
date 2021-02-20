@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:task_manager/providers/room_model.dart';
 import 'package:task_manager/services/database.dart';
 import 'package:task_manager/views/home.dart';
+import 'package:task_manager/views/tasks_screens/finishedtasks_screen.dart';
 import 'package:task_manager/views/tasks_screens/tasks_screen.dart';
 import 'package:task_manager/views/tasks_screens/addtask_screen.dart';
 import 'package:task_manager/views/tasks_screens/members_screen.dart';
@@ -41,15 +42,17 @@ class _TaskPoolState extends State<TaskPool> {
               case 1:
                 return Tasks(false);
               case 2:
-                return Members();
+                return FinishedTasks();
               case 3:
+                return Members();
+              case 4:
                 return Center(
                   child: Text(
                     "Team chat",
                     style: TextStyle(color: Colors.white),
                   ),
                 );
-              case 4:
+              case 5:
                 return RoomInfo();
 
               default:
@@ -94,6 +97,29 @@ class _TaskPoolState extends State<TaskPool> {
                   );
                 }
               case 2:
+                {
+                  return roomData.isOwner
+                      ? FloatingActionButton(
+                          child: Icon(Icons.delete),
+                          onPressed: () async {
+                            String message;
+                            var decision = await decisionAlertDialog(context, "Clean up history",
+                                "Do you want to delete finished tasks?");
+                            if (decision == true) {
+                              message =
+                                  await databaseMethods.deleteAllFinishedTasksFromDb(roomData.id);
+                            }
+                            if (message != null) {
+                              Scaffold.of(context).showSnackBar(snackBarInfo(message));
+                            }
+                          },
+                        )
+                      : Container(
+                          height: 0,
+                          width: 0,
+                        );
+                }
+              case 3:
                 {
                   return roomData.isOwner
                       ? FloatingActionButton(

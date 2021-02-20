@@ -44,12 +44,22 @@ class CustomSideNav extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
+                    Icons.library_books_rounded,
+                    color: Colors.white,
+                  ),
+                  title: navText("Finished tasks"),
+                  onTap: () {
+                    navItemClicked(context, 2);
+                  },
+                ),
+                ListTile(
+                  leading: Icon(
                     Icons.people,
                     color: Colors.white,
                   ),
                   title: navText("Members"),
                   onTap: () {
-                    navItemClicked(context, 2);
+                    navItemClicked(context, 3);
                   },
                 ),
                 ListTile(
@@ -59,7 +69,7 @@ class CustomSideNav extends StatelessWidget {
                   ),
                   title: navText("Team chat"),
                   onTap: () {
-                    navItemClicked(context, 3);
+                    navItemClicked(context, 4);
                   },
                 ),
               ],
@@ -78,7 +88,7 @@ class CustomSideNav extends StatelessWidget {
                   ),
                   title: navText("About room"),
                   onTap: () {
-                    navItemClicked(context, 4);
+                    navItemClicked(context, 5);
                   },
                 ),
                 ListTile(

@@ -138,6 +138,30 @@ class DatabaseMethods {
         .snapshots();
   }
 
+  getDoneTaskPool(String id) {
+    return FirebaseFirestore.instance
+        .collection("tasks")
+        .where("roomId", isEqualTo: id)
+        .where("isDone", isEqualTo: true)
+        .snapshots();
+  }
+
+  Future<String> deleteAllFinishedTasksFromDb(String id) async {
+    try {
+      var query = await FirebaseFirestore.instance
+          .collection("tasks")
+          .where("roomId", isEqualTo: id)
+          .where("isDone", isEqualTo: true)
+          .get();
+      for (var doc in query.docs) {
+        doc.reference.delete();
+      }
+      return "Finished tasks deleted";
+    } on Exception catch (e) {
+      return "error: $e";
+    }
+  }
+
   deleteTaskFromDb(String id) {
     return FirebaseFirestore.instance
         .collection("tasks")

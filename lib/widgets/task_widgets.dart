@@ -14,13 +14,17 @@ Widget taskAppBar(int navIndex) {
       );
     case 2:
       return AppBar(
-        title: Text("Team members' tasks"),
+        title: Text("Finished Tasks"),
       );
     case 3:
       return AppBar(
-        title: Text("Team chat"),
+        title: Text("Team members' tasks"),
       );
     case 4:
+      return AppBar(
+        title: Text("Team chat"),
+      );
+    case 5:
       return AppBar(
         title: Text("About room"),
       );
