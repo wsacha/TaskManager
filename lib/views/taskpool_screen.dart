@@ -22,7 +22,7 @@ class _TaskPoolState extends State<TaskPool> {
   int navIndex = 0;
   @override
   Widget build(BuildContext context) {
-    final roomData = Provider.of<RoomModel>(context, listen: false);
+    final roomData = Provider.of<RoomModel>(context, listen: true);
 
     return WillPopScope(
       onWillPop: () => _moveToRoomsScreen(context),

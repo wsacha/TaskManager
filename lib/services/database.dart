@@ -103,6 +103,26 @@ class DatabaseMethods {
     }
   }
 
+  Future<String> deleteMemberOfRoom(String id, String participant) async {
+    try {
+      await FirebaseFirestore.instance.collection("rooms").doc(id).update({
+        "participants": FieldValue.arrayRemove([participant])
+      });
+      return "User deleted";
+    } catch (e) {
+      return Future.error("error $e");
+    }
+  }
+
+  Future<String> changeOwnerOfRoom(String id, String participant) async {
+    try {
+      await FirebaseFirestore.instance.collection("rooms").doc(id).update({"owner": participant});
+      return "Owner has been changed";
+    } catch (e) {
+      return Future.error("error $e");
+    }
+  }
+
   //TASKS
   addTaskToDb(Task task) {
     return FirebaseFirestore.instance.collection("tasks").doc(task.id).set(task.toJson());
