@@ -73,12 +73,11 @@ class _HomeRoomState extends State<HomeRoom> {
                   children: snapshot.data.docs.map((DocumentSnapshot doc) {
                     return Card(
                       child: ListTile(
-                        onLongPress: () {
-                          decisionAlertDialog(context, "Delete room",
-                                  "Are you sure you want to delete this room?")
-                              .then((val) async {
-                            if ((val == true) &&
-                                (userData.userName == doc.data()["owner"].toString())) {
+                        onLongPress: () async {
+                          bool decision = await decisionAlertDialog(
+                              context, "Delete room", "Are you sure you want to delete this room?");
+                          if (decision == true) {
+                            if ((userData.userName == doc.data()["owner"].toString())) {
                               databaseMethods.deleteRoomFromDb(doc.data()["id"]);
                               Scaffold.of(context)
                                   .showSnackBar(snackBarInfo("Room deleted successfully"));
@@ -86,7 +85,7 @@ class _HomeRoomState extends State<HomeRoom> {
                               Scaffold.of(context).showSnackBar(
                                   snackBarInfo("You don't have permission to delete this room"));
                             }
-                          });
+                          }
                         },
                         onTap: () async {
                           final roomData = Provider.of<RoomModel>(context, listen: false);
@@ -128,12 +127,12 @@ class _HomeRoomState extends State<HomeRoom> {
                 child: Icon(Icons.search),
                 onPressed: () async {
                   var message;
-                  await joinRoomAlertDialog(context).then((val) async {
-                    if (val != null) {
-                      message = await databaseMethods.addUserToRoom(
-                          userData.userName, val['id'], val['entryKey']);
-                    }
-                  });
+                  var val = await joinRoomAlertDialog(context);
+                  if (val != null) {
+                    message = await databaseMethods.addUserToRoom(
+                        userData.userName, val['id'], val['entryKey']);
+                  }
+
                   if (message != null) {
                     Scaffold.of(context).showSnackBar(snackBarInfo(message));
                   }
@@ -157,11 +156,11 @@ class _HomeRoomState extends State<HomeRoom> {
     );
   }
 
-  joinRoomAlertDialog(BuildContext context) {
+  joinRoomAlertDialog(BuildContext context) async {
     final alertKey = GlobalKey<FormState>();
     TextEditingController idTextController = new TextEditingController();
     TextEditingController entryKeyTextController = new TextEditingController();
-    return showDialog(
+    return await showDialog(
         context: context,
         builder: (context) {
           return SingleChildScrollView(
