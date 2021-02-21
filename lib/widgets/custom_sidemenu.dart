@@ -44,7 +44,7 @@ class CustomSideNav extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    Icons.library_books_rounded,
+                    Icons.history,
                     color: Colors.white,
                   ),
                   title: navText("Finished tasks"),

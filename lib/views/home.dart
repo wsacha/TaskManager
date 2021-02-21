@@ -79,7 +79,9 @@ class _HomeRoomState extends State<HomeRoom> {
                                     "Are you sure you want to delete this room?");
                                 if (decision == true) {
                                   if ((userData.userName == doc.data()["owner"].toString())) {
-                                    databaseMethods.deleteRoomFromDb(doc.data()["id"]);
+                                    await databaseMethods.deleteRoomFromDb(doc.data()["id"]);
+                                    await databaseMethods.deleteRoomMessages(doc.data()["id"]);
+                                    await databaseMethods.deleteChatRoomFromDb(doc.data()["id"]);
                                     Scaffold.of(context)
                                         .showSnackBar(snackBarInfo("Room deleted successfully"));
                                   } else if (userData.userName != doc.data()["owner"].toString()) {

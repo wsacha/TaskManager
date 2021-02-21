@@ -22,15 +22,17 @@ class _AddRoomState extends State<AddRoom> {
 
   addRoom(String userName) async {
     if (formKey.currentState.validate()) {
+      String generatedId = DateTime.now().millisecondsSinceEpoch.remainder(10000000).toString();
       Room room = new Room(
-          id: DateTime.now().millisecondsSinceEpoch.remainder(10000000).toString(),
+          id: generatedId,
           roomTitle: roomTitleTextEditingController.text,
           description: descriptionTextEditingController.text,
           entryKey: entryKeyTextEditingController.text,
           owner: userName,
           participants: [userName]);
 
-      databaseMethods.addRoomToDb(room);
+      await databaseMethods.addRoomToDb(room);
+      databaseMethods.addChatRoomToDb(generatedId);
 
       Navigator.pop(context);
     }

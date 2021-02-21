@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:task_manager/models/message.dart';
 import 'package:task_manager/models/room.dart';
 import 'package:task_manager/models/task.dart';
 
@@ -172,8 +173,8 @@ class DatabaseMethods {
     }
   }
 
-  deleteTaskFromDb(String id) {
-    return FirebaseFirestore.instance
+  deleteTaskFromDb(String id) async {
+    return await FirebaseFirestore.instance
         .collection("tasks")
         .doc(id)
         .delete()
@@ -203,6 +204,62 @@ class DatabaseMethods {
       print("User updated");
     } catch (e) {
       print("failed to update user: $e");
+    }
+  }
+
+  //Rooms
+  addMessageToDb(String chatRoomId, Message message) {
+    return FirebaseFirestore.instance
+        .collection("chatrooms")
+        .doc(chatRoomId)
+        .collection("chats")
+        .doc()
+        .set(message.toJson());
+  }
+
+  getChatRoomMessages(String chatRoomId) {
+    return FirebaseFirestore.instance
+        .collection("chatrooms")
+        .doc(chatRoomId)
+        .collection("chats")
+        .orderBy("messageTime", descending: true)
+        .snapshots();
+  }
+
+  Future<String> deleteRoomMessages(String chatRoomId) async {
+    try {
+      var query = await FirebaseFirestore.instance
+          .collection("chatrooms")
+          .doc(chatRoomId)
+          .collection("chats")
+          .get();
+      for (var doc in query.docs) {
+        doc.reference.delete();
+      }
+      return "Messages deleted";
+    } catch (e) {
+      return "failed to update user: $e";
+    }
+  }
+
+  Future<String> addChatRoomToDb(String generatedId) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection("chatrooms")
+          .doc(generatedId)
+          .set({"roomId": generatedId});
+      return "Chatroom added";
+    } on Exception catch (e) {
+      return "Error: $e";
+    }
+  }
+
+  Future<String> deleteChatRoomFromDb(String id) async {
+    try {
+      await FirebaseFirestore.instance.collection("chatrooms").doc(id).delete();
+      return "Chatroom deleted";
+    } catch (e) {
+      return "Error $e";
     }
   }
 }

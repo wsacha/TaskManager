@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:task_manager/providers/room_model.dart';
 import 'package:task_manager/services/database.dart';
 import 'package:task_manager/views/home.dart';
+import 'package:task_manager/views/tasks_screens/chat_screen.dart';
 import 'package:task_manager/views/tasks_screens/finishedtasks_screen.dart';
 import 'package:task_manager/views/tasks_screens/tasks_screen.dart';
 import 'package:task_manager/views/tasks_screens/addtask_screen.dart';
@@ -28,7 +29,28 @@ class _TaskPoolState extends State<TaskPool> {
     return WillPopScope(
       onWillPop: () => _moveToRoomsScreen(context),
       child: Scaffold(
-        appBar: taskAppBar(navIndex),
+        appBar: (navIndex != 4)
+            ? taskAppBar(navIndex)
+            : AppBar(
+                title: Text("Team chat"),
+                actions: [
+                  (roomData.isOwner == true)
+                      ? IconButton(
+                          icon: Icon(Icons.cleaning_services_outlined),
+                          onPressed: () async {
+                            var decision = await decisionAlertDialog(context,
+                                "Clear a conversation", "Do you want to clear a conversation?");
+                            if (decision == true) {
+                              await databaseMethods.deleteRoomMessages(roomData.id);
+                            }
+                          },
+                        )
+                      : Container(
+                          width: 0,
+                          height: 0,
+                        )
+                ],
+              ),
         drawer: CustomSideNav(navIndex, (int index) {
           setState(() {
             navIndex = index;
@@ -46,12 +68,7 @@ class _TaskPoolState extends State<TaskPool> {
               case 3:
                 return Members();
               case 4:
-                return Center(
-                  child: Text(
-                    "Team chat",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                );
+                return Chat();
               case 5:
                 return RoomInfo();
 

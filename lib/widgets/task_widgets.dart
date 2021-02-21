@@ -20,10 +20,6 @@ Widget taskAppBar(int navIndex) {
       return AppBar(
         title: Text("Team members' tasks"),
       );
-    case 4:
-      return AppBar(
-        title: Text("Team chat"),
-      );
     case 5:
       return AppBar(
         title: Text("About room"),
