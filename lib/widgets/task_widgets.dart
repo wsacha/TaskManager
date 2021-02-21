@@ -112,7 +112,7 @@ taskInfoAlertDialog(BuildContext context, Task task) {
           content: Container(
             height: 350,
             width: 300,
-            child: Column(
+            child: ListView(
               children: [
                 taskInfoListTile("Title", task.title),
                 taskInfoListTile("Description", task.description),

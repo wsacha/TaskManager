@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 Widget appBarScreens(BuildContext context, String screenTitle) {
@@ -67,6 +69,39 @@ Future<bool> decisionAlertDialog(BuildContext context, String title, String cont
             ),
             FlatButton(
               child: Text("Yes"),
+              onPressed: () {
+                Navigator.of(context).pop(true);
+              },
+            )
+          ],
+        );
+      });
+}
+
+Future<bool> logoutAlertDialog(BuildContext context, String userName, String userEmail) async {
+  return await showDialog(
+      context: (context),
+      builder: (context) {
+        return AlertDialog(
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                userName,
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Text(
+                userEmail,
+                style: TextStyle(fontSize: 20),
+              ),
+            ],
+          ),
+          actions: [
+            FlatButton(
+              child: Text("Log out", style: TextStyle(fontSize: 20)),
               onPressed: () {
                 Navigator.of(context).pop(true);
               },

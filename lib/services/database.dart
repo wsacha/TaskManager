@@ -173,12 +173,17 @@ class DatabaseMethods {
     }
   }
 
-  deleteTaskFromDb(String id) async {
-    return await FirebaseFirestore.instance
-        .collection("tasks")
-        .doc(id)
-        .delete()
-        .catchError((val) => null);
+  Future<String> deleteTaskFromDb(String id) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection("tasks")
+          .doc(id)
+          .delete()
+          .catchError((val) => null);
+      return "Task deleted";
+    } on Exception catch (e) {
+      return "Error: $e";
+    }
   }
 
   void attachTaskToUser(String id, String userName) {

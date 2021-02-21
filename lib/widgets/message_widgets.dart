@@ -7,6 +7,7 @@ Widget chatMessageTile(Message message, bool sendByMe) {
     mainAxisSize: MainAxisSize.min,
     children: [
       Container(
+        constraints: BoxConstraints(maxWidth: 250),
         padding: EdgeInsets.all(16),
         margin: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
         decoration: BoxDecoration(

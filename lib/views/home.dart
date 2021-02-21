@@ -40,14 +40,14 @@ class _HomeRoomState extends State<HomeRoom> {
   Widget build(BuildContext context) {
     final userData = Provider.of<UserDataModel>(context, listen: false);
     return WillPopScope(
-      onWillPop: () => _logoutUser(context),
+      onWillPop: () => _logoutUser(context, userData.userName, userData.userEmail),
       child: Scaffold(
         appBar: AppBar(
           title: Text('Rooms'),
           actions: [
             GestureDetector(
                 onTap: () {
-                  _logoutUser(context);
+                  _logoutUser(context, userData.userName, userData.userEmail);
                 },
                 child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 16),
@@ -239,9 +239,8 @@ class _HomeRoomState extends State<HomeRoom> {
         });
   }
 
-  Future<bool> _logoutUser(BuildContext context) async {
-    bool decision =
-        await decisionAlertDialog(context, "Logout", "Are you sure you want to log out?");
+  Future<bool> _logoutUser(BuildContext context, String userName, String userEmail) async {
+    bool decision = await logoutAlertDialog(context, userName, userEmail);
     if (decision == true) {
       await logoutUserAndClearDataInProvider();
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Authenticate()));
